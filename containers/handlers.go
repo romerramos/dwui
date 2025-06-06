@@ -15,8 +15,19 @@ type IndexPageData struct {
 	Containers []containertypes.Summary
 }
 
-func formatID(id string) string {
-	return id[0:12]
+func shortenID(id string) string {
+	return shortenWithAmount(id, 12)
+}
+
+func shortenName(name string) string {
+	return shortenWithAmount(name, 25)
+}
+
+func shortenWithAmount(text string, amount int) string {
+	if len(text) > amount {
+		return text[:amount]
+	}
+	return text
 }
 
 func Index(templateFS embed.FS) http.HandlerFunc {
@@ -39,7 +50,8 @@ func Index(templateFS embed.FS) http.HandlerFunc {
 		}
 
 		funcMap := template.FuncMap{
-			"formatID": formatID,
+			"shortenID":   shortenID,
+			"shortenName": shortenName,
 		}
 
 		tmpl := template.Must(template.New("index.html").Funcs(funcMap).ParseFS(templateFS, "containers/index.html"))

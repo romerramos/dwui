@@ -22,13 +22,13 @@
                     <div class="flex flex-col space-y-4 w-5/12 h-full">
                         {{range .Containers}}
                             <div class="flex items-center gap-3 first:border first:border-gray-100 py-2 px-3 rounded mx-2">
-                                <div class="flex items-center gap-3 flex-grow">
-                                    <div class="flex">
+                                <div class="w-full gap-3">
+                                    <div class="flex flex-grow">
                                         {{range .Names}}
-                                            <div class="text-lg font-bold">{{.}}</div>
+                                            <div class="font-bold text-ellipsis">{{shortenName .}}</div>
                                         {{end}}
                                     </div>
-                                    <div>{{formatID .ID}} - {{.Status}}</div>
+                                    <div class="text-sm">{{shortenID .ID}} - {{.Status}}</div>
                                 </div>
                                 <button 
                                     class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
