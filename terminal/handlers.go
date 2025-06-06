@@ -1,20 +1,26 @@
 package terminal
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
-func Show(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("terminal/terminal.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+type ShowPageData struct {
+	ContainerID string
+}
+
+func Show(w http.ResponseWriter, req *http.Request) {
+	var containerID = chi.URLParam(req, "containerID")
+
+	fmt.Println("Container id", containerID)
+	data := ShowPageData{
+		ContainerID: containerID,
 	}
 
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	tmpl := template.Must(template.ParseFiles(("terminal/show.html")))
+
+	tmpl.Execute(w, data)
 }

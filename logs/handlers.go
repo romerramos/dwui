@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/docker/docker/client"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -14,12 +13,6 @@ type ShowPageData struct {
 }
 
 func Show(w http.ResponseWriter, req *http.Request) {
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		panic(err)
-	}
-
-	defer cli.Close()
 	var containerID = chi.URLParam(req, "containerID")
 
 	data := ShowPageData{
