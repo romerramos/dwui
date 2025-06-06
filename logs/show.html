@@ -1,0 +1,5 @@
+<pre id="logs"
+    hx-get="/logs/{{.ContainerID}}"
+    hx-target="#logs"
+    hx-trigger="load delay:5s"
+    hx-swap="outerHTML">{{.Content}}</pre>

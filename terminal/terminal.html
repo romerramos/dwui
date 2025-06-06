@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Docker Container Terminal</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+    </head>
+    <body class="h-full bg-gray-900 text-white font-mono">
+        <div class="container mx-auto p-4 h-full flex flex-col">
+            <!-- Header -->
+            <div class="bg-gray-800 rounded-lg p-4 mb-4 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-2xl font-bold flex items-center">
+                        <span id="status" class="w-3 h-3 rounded-full mr-3 bg-red-500"></span>
+                        Docker Container Terminal
+                    </h1>
+                    <a href="/containers" 
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm transition-colors">
+                        ← Back to Containers
+                    </a>
+                </div>
+                <div class="text-sm text-gray-300 mt-2">
+                    Container ID: <span id="container-id" class="font-semibold text-blue-400"></span>
+                </div>
+            </div>
+            
+            <!-- Terminal Container -->
+            <div class="flex-1 bg-black rounded-lg shadow-lg overflow-hidden">
+                <div id="terminal" class="w-full h-full"></div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+        <script>
+            // Get container ID from URL path
+            const pathParts = window.location.pathname.split('/');
+            const containerIdIndex = pathParts.indexOf('view') + 1;
+            const containerId = pathParts[containerIdIndex];
+            
+            // Update UI with container ID
+            document.getElementById('container-id').textContent = containerId;
+
+            // Initialize xterm.js
+            const terminal = new Terminal({
+                cursorBlink: true,
+                fontFamily: 'JetBrains Mono, Fira Code, Courier New, monospace',
+                fontSize: 14,
+                lineHeight: 1.2,
+                theme: {
+                    background: '#000000',
+                    foreground: '#ffffff',
+                    cursor: '#ffffff',
+                    selection: '#ffffff40',
+                    black: '#000000',
+                    red: '#ff5555',
+                    green: '#50fa7b',
+                    yellow: '#f1fa8c',
+                    blue: '#bd93f9',
+                    magenta: '#ff79c6',
+                    cyan: '#8be9fd',
+                    white: '#bfbfbf'
+                }
+            });
+
+            const fitAddon = new FitAddon.FitAddon();
+            terminal.loadAddon(fitAddon);
+            terminal.open(document.getElementById('terminal'));
+            fitAddon.fit();
+
+            // Status elements
+            const statusElement = document.getElementById('status');
+
+            function updateStatus(status) {
+                const statusClasses = {
+                    'connecting': 'bg-yellow-500',
+                    'connected': 'bg-green-500',
+                    'disconnected': 'bg-red-500'
+                };
+                
+                statusElement.className = `w-3 h-3 rounded-full mr-3 ${statusClasses[status]}`;
+            }
+
+            // WebSocket connection
+            let socket;
+            let isConnected = false;
+
+            function connectWebSocket() {
+                updateStatus('connecting');
+                
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const wsUrl = `${protocol}//${window.location.host}/terminal/${containerId}`;
+                
+                socket = new WebSocket(wsUrl);
+
+                socket.onopen = function(event) {
+                    console.log('WebSocket connected');
+                    isConnected = true;
+                    updateStatus('connected');
+                    terminal.writeln('\x1b[32mConnected to container terminal...\x1b[0m\r\n');
+                };
+
+                socket.onmessage = function(event) {
+                    terminal.write(event.data);
+                };
+
+                socket.onclose = function(event) {
+                    console.log('WebSocket disconnected');
+                    isConnected = false;
+                    updateStatus('disconnected');
+                    terminal.writeln('\r\n\x1b[31mConnection lost. Attempting to reconnect...\x1b[0m');
+                    
+                    // Attempt to reconnect after 3 seconds
+                    setTimeout(connectWebSocket, 3000);
+                };
+
+                socket.onerror = function(error) {
+                    console.error('WebSocket error:', error);
+                    updateStatus('disconnected');
+                    terminal.writeln('\r\n\x1b[31mConnection error occurred.\x1b[0m');
+                };
+            }
+
+            // Send terminal input to WebSocket
+            terminal.onData(function(data) {
+                if (isConnected && socket.readyState === WebSocket.OPEN) {
+                    socket.send(data);
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                fitAddon.fit();
+            });
+
+            // Start connection
+            connectWebSocket();
+
+            // Handle page visibility for reconnection
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden && !isConnected) {
+                    connectWebSocket();
+                }
+            });
+        </script>
+    </body>
+</html>
