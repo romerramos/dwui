@@ -6,13 +6,14 @@ import (
 	"net/http"
 
 	containertypes "github.com/docker/docker/api/types/container"
+	"github.com/go-chi/chi/v5"
 
 	"github.com/docker/docker/client"
 	"github.com/gorilla/websocket"
 )
 
 func Socket(w http.ResponseWriter, r *http.Request) {
-	containerID := r.PathValue("id")
+	var containerID = chi.URLParam(r, "containerID")
 	ctx := context.Background()
 
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())

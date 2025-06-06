@@ -1,7 +1,7 @@
 package terminal
 
 import (
-	"fmt"
+	"embed"
 	"html/template"
 	"net/http"
 
@@ -12,15 +12,16 @@ type ShowPageData struct {
 	ContainerID string
 }
 
-func Show(w http.ResponseWriter, req *http.Request) {
-	var containerID = chi.URLParam(req, "containerID")
+func Show(templateFS embed.FS) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		var containerID = chi.URLParam(req, "containerID")
 
-	fmt.Println("Container id", containerID)
-	data := ShowPageData{
-		ContainerID: containerID,
+		data := ShowPageData{
+			ContainerID: containerID,
+		}
+
+		tmpl := template.Must(template.ParseFS(templateFS, "terminal/show.html"))
+
+		tmpl.Execute(w, data)
 	}
-
-	tmpl := template.Must(template.ParseFiles(("terminal/show.html")))
-
-	tmpl.Execute(w, data)
 }
