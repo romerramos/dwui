@@ -19,7 +19,10 @@ func GetByContainer(containerID string) string {
 
 	defer cli.Close()
 
-	options := containertypes.LogsOptions{ShowStdout: true}
+	options := containertypes.LogsOptions{
+		ShowStdout: true,
+		Tail:       "45",
+	}
 
 	out, err := cli.ContainerLogs(ctx, containerID, options)
 	if err != nil {
