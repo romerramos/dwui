@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
+	"io/fs"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -16,10 +17,17 @@ import (
 //go:embed containers/*.html logs/*.html terminal/*.html
 var templateFiles embed.FS
 
+//go:embed javascript/*
+var staticFiles embed.FS
+
 func main() {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
+
+	// Serve static files
+	staticFS, _ := fs.Sub(staticFiles, "javascript")
+	r.Handle("/javascript/*", http.StripPrefix("/javascript/", http.FileServer(http.FS(staticFS))))
 
 	r.Get("/containers", containers.Index(templateFiles))
 	r.Get("/logs/{containerID}", logs.Show(templateFiles))

@@ -7,8 +7,28 @@
     <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.js" integrity="sha384-oeUn82QNXPuVkGCkcrInrS1twIxKhkZiFfr2TdiuObZ3n3yIeMiqcRzkIcguaof1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "terminal": "/javascript/xterm.js"
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
     <title>{{ .PageTitle }}</title>
+    <script type="module">
+        import { createTerminalComponent } from 'terminal';
+        import Alpine from '//unpkg.com/alpinejs/dist/module.esm.js';
+        
+        // Register the terminal component
+        Alpine.data('terminal', createTerminalComponent());
+        
+        // Start Alpine
+        Alpine.start();
+        
+        // Make Alpine available globally for debugging
+        window.Alpine = Alpine;
+    </script>
 </head>
     <body class="h-full">
         <div class="container flex flex-col mx-auto p-2 sm:p-4 h-full">
