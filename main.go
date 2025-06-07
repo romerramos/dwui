@@ -9,12 +9,12 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"github.com/dwui/containers"
-	"github.com/dwui/logs"
-	"github.com/dwui/terminal"
+	"github.com/dwui/cmd/containers"
+	"github.com/dwui/cmd/logs"
+	"github.com/dwui/cmd/terminal"
 )
 
-//go:embed containers/*.gohtml logs/*.gohtml terminal/*.gohtml
+//go:embed cmd/containers/*.gohtml cmd/logs/*.gohtml cmd/terminal/*.gohtml
 var templateFiles embed.FS
 
 //go:embed javascript/*

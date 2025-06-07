@@ -20,7 +20,7 @@ func Show(templateFS embed.FS) http.HandlerFunc {
 			ContainerID: containerID,
 		}
 
-		tmpl := template.Must(template.ParseFS(templateFS, "terminal/show.gohtml"))
+		tmpl := template.Must(template.ParseFS(templateFS, "cmd/terminal/show.gohtml"))
 
 		tmpl.Execute(w, data)
 	}

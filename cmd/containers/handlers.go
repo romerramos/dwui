@@ -54,7 +54,7 @@ func Index(templateFS embed.FS) http.HandlerFunc {
 			"shortenName": shortenName,
 		}
 
-		tmpl := template.Must(template.New("index.gohtml").Funcs(funcMap).ParseFS(templateFS, "containers/index.gohtml"))
+		tmpl := template.Must(template.New("index.gohtml").Funcs(funcMap).ParseFS(templateFS, "cmd/containers/index.gohtml"))
 
 		tmpl.Execute(w, data)
 	}
