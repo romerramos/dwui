@@ -14,7 +14,7 @@
     <script type="importmap">
       {
         "imports": {
-          "terminal": "/assets/javascript/xterm.js"
+          "terminal": "/javascript/xterm.js"
         }
       }
     </script>
@@ -24,17 +24,17 @@
     />
     <title>{{ .PageTitle }}</title>
     <script type="module">
-      import { createTerminalComponent } from "terminal";
-      import Alpine from "//unpkg.com/alpinejs/dist/module.esm.js";
+      import { createTerminalComponent } from "terminal"
+      import Alpine from "//unpkg.com/alpinejs/dist/module.esm.js"
 
       // Register the terminal component
-      Alpine.data("terminal", createTerminalComponent());
+      Alpine.data("terminal", createTerminalComponent())
 
       // Start Alpine
-      Alpine.start();
+      Alpine.start()
 
       // Make Alpine available globally for debugging
-      window.Alpine = Alpine;
+      window.Alpine = Alpine
     </script>
   </head>
   <body class="h-full">

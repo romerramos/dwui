@@ -17,7 +17,7 @@ import (
 //go:embed containers/*.gohtml logs/*.gohtml terminal/*.gohtml
 var templateFiles embed.FS
 
-//go:embed assets/javascript/*
+//go:embed javascript/*
 var javascriptFiles embed.FS
 
 //go:embed assets/stylesheets/*
@@ -29,9 +29,9 @@ func main() {
 	r.Use(middleware.Logger)
 
 	// Serve static files
-	javascriptFS, _ := fs.Sub(javascriptFiles, "assets/javascript")
+	javascriptFS, _ := fs.Sub(javascriptFiles, "javascript")
 	stylesheetFS, _ := fs.Sub(stylesheetsFiles, "assets/stylesheets")
-	r.Handle("/assets/javascript/*", http.StripPrefix("/assets/javascript/", http.FileServer(http.FS(javascriptFS))))
+	r.Handle("/javascript/*", http.StripPrefix("/javascript/", http.FileServer(http.FS(javascriptFS))))
 	r.Handle("/assets/stylesheets/*", http.StripPrefix("/assets/stylesheets/", http.FileServer(http.FS(stylesheetFS))))
 
 	r.Get("/containers", containers.Index(templateFiles))

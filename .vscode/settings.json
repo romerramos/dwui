@@ -1,8 +1,10 @@
 {
   "editor.formatOnSave": true,
-  "[gohtml]": {
+  "[gohtml][javascript][json][jsonc][yaml][yml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "files.associations": {
     "*.gohtml": "html"
