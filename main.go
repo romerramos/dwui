@@ -14,7 +14,7 @@ import (
 	"github.com/dwui/terminal"
 )
 
-//go:embed containers/*.html logs/*.html terminal/*.html
+//go:embed containers/*.gohtml logs/*.gohtml terminal/*.gohtml
 var templateFiles embed.FS
 
 //go:embed javascript/*
