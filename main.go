@@ -38,6 +38,7 @@ func main() {
 	r.Get("/", home.Show(templateFiles))
 	r.Get("/containers", containers.Index(templateFiles))
 	r.Get("/logs/{containerID}", logs.Show(templateFiles))
+	r.Get("/logs/stream/{containerID}", logs.Socket)
 	r.Get("/terminal/{containerID}", terminal.Socket)
 	r.Get("/terminal/view/{containerID}", terminal.Show(templateFiles))
 

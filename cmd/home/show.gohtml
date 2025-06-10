@@ -14,7 +14,8 @@
     <script type="importmap">
       {
         "imports": {
-          "terminal": "/javascript/xterm.js"
+          "terminal": "/javascript/xterm.js",
+          "logs": "/javascript/logs.js"
         }
       }
     </script>
@@ -22,13 +23,21 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css"
+    />
     <title>{{ .PageTitle }}</title>
     <script type="module">
       import { createTerminalComponent } from "terminal"
+      import { createLogsComponent } from "logs"
       import Alpine from "//unpkg.com/alpinejs/dist/module.esm.js"
 
       // Register the terminal component
       Alpine.data("terminal", createTerminalComponent())
+
+      // Register the logs component
+      Alpine.data("logsComponent", createLogsComponent())
 
       // Start Alpine
       Alpine.start()

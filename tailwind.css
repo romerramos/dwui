@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @source "../**/*.html";
+
+@theme {
+    --font-mono: "font", JetBrains Mono;
+}

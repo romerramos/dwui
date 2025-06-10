@@ -1,5 +1,18 @@
-<pre id="logs"
-    hx-get="/logs/{{.ContainerID}}"
-    hx-target="#logs"
-    hx-trigger="load delay:5s"
-    hx-swap="outerHTML">{{.Content}}</pre>
+<div
+  class="flex flex-col h-full w-full font-mono"
+  x-data="logsComponent('{{ .ContainerID }}')"
+  x-init="initLogs()"
+  x-on:beforeunload.window="destroy()"
+>
+  <div class="absolute top-1 right-2">
+    <div x-show="isConnected" class="text-green-400 text-xs">●</div>
+    <div x-show="!isConnected" class="text-red-400 text-xs">●</div>
+  </div>
+
+  <pre
+    x-ref="logsElement"
+    class="overflow-x-auto flex-1 rounded overflow-y-auto font-mono whitespace-pre leading-tight"
+  >
+{{ .Content }}</pre
+  >
+</div>

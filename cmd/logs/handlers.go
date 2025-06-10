@@ -17,13 +17,13 @@ func Show(templateFS embed.FS) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		var containerID = chi.URLParam(req, "containerID")
 
+		// Just render the template with empty content - WebSocket will handle all logs
 		data := ShowPageData{
-			Content:     GetByContainer(containerID),
+			Content:     "", // Empty - WebSocket will populate
 			ContainerID: containerID,
 		}
 
 		tmpl := template.Must(template.ParseFS(templateFS, "cmd/logs/show.gohtml"))
-
 		tmpl.Execute(w, data)
 	}
 }
