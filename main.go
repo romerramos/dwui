@@ -10,11 +10,12 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/dwui/cmd/containers"
+	"github.com/dwui/cmd/home"
 	"github.com/dwui/cmd/logs"
 	"github.com/dwui/cmd/terminal"
 )
 
-//go:embed cmd/containers/*.gohtml cmd/logs/*.gohtml cmd/terminal/*.gohtml
+//go:embed cmd/**/*.gohtml
 var templateFiles embed.FS
 
 //go:embed javascript/*
@@ -34,6 +35,7 @@ func main() {
 	r.Handle("/javascript/*", http.StripPrefix("/javascript/", http.FileServer(http.FS(javascriptFS))))
 	r.Handle("/assets/stylesheets/*", http.StripPrefix("/assets/stylesheets/", http.FileServer(http.FS(stylesheetFS))))
 
+	r.Get("/", home.Show(templateFiles))
 	r.Get("/containers", containers.Index(templateFiles))
 	r.Get("/logs/{containerID}", logs.Show(templateFiles))
 	r.Get("/terminal/{containerID}", terminal.Socket)

@@ -11,7 +11,6 @@ import (
 )
 
 type IndexPageData struct {
-	PageTitle  string
 	Containers []containertypes.Summary
 }
 
@@ -45,7 +44,6 @@ func Index(templateFS embed.FS) http.HandlerFunc {
 		}
 
 		data := IndexPageData{
-			PageTitle:  "Docker Web UI",
 			Containers: containers,
 		}
 

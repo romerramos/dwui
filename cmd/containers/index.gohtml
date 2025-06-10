@@ -1,102 +1,51 @@
-<!DOCTYPE html>
-<html lang="en" class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="../assets/stylesheets/output.css" rel="stylesheet" />
-    <script
-      src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.js"
-      integrity="sha384-oeUn82QNXPuVkGCkcrInrS1twIxKhkZiFfr2TdiuObZ3n3yIeMiqcRzkIcguaof1"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "terminal": "/javascript/xterm.js"
-        }
-      }
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css"
-    />
-    <title>{{ .PageTitle }}</title>
-    <script type="module">
-      import { createTerminalComponent } from "terminal"
-      import Alpine from "//unpkg.com/alpinejs/dist/module.esm.js"
-
-      // Register the terminal component
-      Alpine.data("terminal", createTerminalComponent())
-
-      // Start Alpine
-      Alpine.start()
-
-      // Make Alpine available globally for debugging
-      window.Alpine = Alpine
-    </script>
-  </head>
-  <body class="h-full">
-    <div class="container flex flex-col mx-auto p-2 sm:p-4 h-full">
-      <h1 class="text-xl sm:text-2xl font-bold mb-4">{{ .PageTitle }}</h1>
-      <p class="mb-4 text-sm sm:text-base">
-        This page lists all the containers in the system.
-      </p>
-
-      {{ if eq (len .Containers) 0 }}
-        <p class="bg-gray-200">No containers found.</p>
-      {{ else }}
-        <div class="flex flex-col lg:flex-row w-full flex-grow gap-4">
-          <div
-            class="flex flex-col space-y-4 w-full lg:w-5/12 h-auto lg:h-full"
-          >
-            {{ range .Containers }}
-              <div
-                class="flex flex-col sm:flex-row sm:items-center gap-3 first:border first:border-gray-100 py-2 px-3 rounded mx-2"
-              >
-                <div class="w-full gap-3">
-                  <div class="flex flex-grow">
-                    {{ range .Names }}
-                      <div class="font-bold text-ellipsis">
-                        {{ shortenName . }}
-                      </div>
-                    {{ end }}
-                  </div>
-                  <div class="text-sm">{{ shortenID .ID }} - {{ .Status }}</div>
+{{ if eq (len .Containers) 0 }}
+  <p class="bg-gray-200">No containers found.</p>
+{{ else }}
+  <div class="flex flex-col lg:flex-row w-full flex-grow gap-4">
+    <div class="flex flex-col space-y-4 w-full lg:w-5/12 h-auto lg:h-full">
+      {{ range .Containers }}
+        <div
+          class="flex flex-col sm:flex-row sm:items-center gap-3 first:border first:border-gray-100 py-2 px-3 rounded mx-2"
+        >
+          <div class="w-full gap-3">
+            <div class="flex flex-grow">
+              {{ range .Names }}
+                <div class="font-bold text-ellipsis">
+                  {{ shortenName . }}
                 </div>
-                <div class="flex gap-2 flex-shrink-0">
-                  <button
-                    class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
-                    hx-get="/logs/{{ .ID }}"
-                    hx-trigger="click"
-                    hx-target="#container"
-                    hx-swap="innerHTML show:#container:top"
-                  >
-                    Logs
-                  </button>
-
-                  <button
-                    class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
-                    hx-get="/terminal/view/{{ .ID }}"
-                    hx-trigger="click"
-                    hx-target="#container"
-                    hx-swap="innerHTML show:#container:top"
-                  >
-                    Terminal
-                  </button>
-                </div>
-              </div>
-            {{ end }}
+              {{ end }}
+            </div>
+            <div class="text-sm">{{ shortenID .ID }} - {{ .Status }}</div>
           </div>
-          <code
-            id="container"
-            class="flex w-full lg:w-7/12 overflow-x-auto bg-gray-800 text-white p-4 rounded min-h-96 h-full lg:h-full text-xs"
-          >
-            <---- Choose a container on the list to see the logs here.
-          </code>
+          <div class="flex gap-2 flex-shrink-0">
+            <button
+              class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
+              hx-get="/logs/{{ .ID }}"
+              hx-trigger="click"
+              hx-target="#container"
+              hx-swap="innerHTML show:#container:top"
+            >
+              Logs
+            </button>
+
+            <button
+              class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
+              hx-get="/terminal/view/{{ .ID }}"
+              hx-trigger="click"
+              hx-target="#container"
+              hx-swap="innerHTML show:#container:top"
+            >
+              Terminal
+            </button>
+          </div>
         </div>
       {{ end }}
     </div>
-  </body>
-</html>
+    <code
+      id="container"
+      class="flex w-full lg:w-7/12 overflow-x-auto bg-gray-800 text-white p-4 rounded min-h-96 h-full lg:h-full text-xs"
+    >
+      <---- Choose a container on the list to see the logs here.
+    </code>
+  </div>
+{{ end }}
