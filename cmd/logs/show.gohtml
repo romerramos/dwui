@@ -3,8 +3,66 @@
   x-data="logsComponent('{{ .ContainerID }}')"
   x-init="initLogs()"
   x-on:beforeunload.window="destroy()"
+  x-on:keydown.ctrl.f.prevent="toggleSearch()"
+  x-on:keydown.cmd.f.prevent="toggleSearch()"
+  x-on:keydown.escape="hideSearch()"
 >
+  <!-- Search Bar -->
+  <div
+    x-show="showSearch"
+    class="absolute top-1 left-2 right-2 z-10 bg-gray-800 border border-gray-600 rounded p-2 shadow-lg"
+  >
+    <div class="flex items-center gap-2">
+      <input
+        x-ref="searchInput"
+        x-model="searchQuery"
+        x-on:input="performSearch()"
+        x-on:keydown.enter.prevent="findNext()"
+        x-on:keydown.shift.enter.prevent="findPrevious()"
+        class="flex-1 px-2 py-1 text-sm bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+        placeholder="Search logs... (Enter: next, Shift+Enter: previous, Esc: close)"
+      />
+      <button
+        x-on:click="findPrevious()"
+        class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+        x-bind:disabled="searchMatches.length === 0"
+        x-bind:class="searchMatches.length === 0 ? 'opacity-50 cursor-not-allowed' : ''"
+        title="Previous match"
+      >
+        ↑
+      </button>
+      <button
+        x-on:click="findNext()"
+        class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+        x-bind:disabled="searchMatches.length === 0"
+        x-bind:class="searchMatches.length === 0 ? 'opacity-50 cursor-not-allowed' : ''"
+        title="Next match"
+      >
+        ↓
+      </button>
+      <span x-show="searchQuery" class="text-xs text-gray-400">
+        <span
+          x-text="searchMatches.length > 0 ? (currentMatchIndex + 1) + ' of ' + searchMatches.length : 'No matches'"
+        ></span>
+      </span>
+      <button
+        x-on:click="hideSearch()"
+        class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+        title="Close search"
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+
   <div class="absolute top-1 right-2 flex items-center gap-2">
+    <button
+      x-on:click="toggleSearch()"
+      class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+      title="Search (Ctrl+F)"
+    >
+      🔍
+    </button>
     <button
       x-on:click="decreaseFontSize()"
       class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
