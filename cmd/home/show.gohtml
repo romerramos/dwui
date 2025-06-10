@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,11 +46,12 @@
       window.Alpine = Alpine
     </script>
   </head>
-  <body class="h-full">
-    <div class="container flex flex-col mx-auto p-2 sm:p-4 h-full">
+  <body>
+    <div class="container flex flex-col mx-auto p-2 sm:p-4 h-svh">
       <h1 class="text-xl sm:text-2xl font-bold mb-4">{{ .PageTitle }}</h1>
       <div
         id="containers"
+        class="grow overflow-y-hidden"
         hx-get="/containers"
         hx-trigger="load"
         hx-target="#containers"

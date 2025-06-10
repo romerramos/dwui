@@ -6,7 +6,7 @@ export function createLogsComponent() {
     containerId: containerId,
     logs: "",
     logLines: [], // Array to store individual log lines
-    maxLines: 40, // Maximum number of lines to display (matches WebSocket initial)
+    maxLines: 50, // Maximum number of lines to display (matches WebSocket initial)
 
     initLogs() {
       // Initialize with empty logs - WebSocket will populate everything

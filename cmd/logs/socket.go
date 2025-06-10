@@ -42,7 +42,7 @@ func Socket(w http.ResponseWriter, r *http.Request) {
 		ShowStderr: true,
 		Follow:     false,
 		Timestamps: false,
-		Tail:       "40", // Send last 50 lines initially for better context
+		Tail:       "50", // Send last 50 lines initially for better context
 	}
 
 	initialOut, err := cli.ContainerLogs(ctx, containerID, initialOptions)
