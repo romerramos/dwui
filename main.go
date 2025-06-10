@@ -11,6 +11,7 @@ import (
 
 	"github.com/dwui/cmd/containers"
 	"github.com/dwui/cmd/home"
+	"github.com/dwui/cmd/inspect"
 	"github.com/dwui/cmd/logs"
 	"github.com/dwui/cmd/terminal"
 )
@@ -46,6 +47,7 @@ func main() {
 	r.Get("/logs/stream/{containerID}", logs.Socket)
 	r.Get("/terminal/{containerID}", terminal.Socket)
 	r.Get("/terminal/view/{containerID}", terminal.Show(templateFiles))
+	r.Get("/inspect/{containerID}", inspect.Show(templateFiles))
 
 	fmt.Println("Starting server on :8080")
 	err := http.ListenAndServe(":8080", r)
