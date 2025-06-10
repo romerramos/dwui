@@ -12,7 +12,7 @@ export function createTerminalComponent() {
       this.terminal = new Terminal({
         cursorBlink: true,
         fontFamily: "JetBrains Mono, Fira Code, Courier New, monospace",
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 1.2,
         theme: {
           background: "#1e2939",

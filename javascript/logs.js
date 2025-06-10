@@ -8,7 +8,7 @@ export function createLogsComponent() {
     logLines: [], // Array to store individual log lines
     autoScroll: true, // Auto-scroll toggle state
     userScrolledUp: false, // Track if user manually scrolled up
-    fontSize: 14, // Font size in pixels
+    fontSize: 12, // Font size in pixels
     minFontSize: 8, // Minimum font size
     maxFontSize: 24, // Maximum font size
 
