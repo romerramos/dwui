@@ -24,6 +24,9 @@ var javascriptFiles embed.FS
 //go:embed assets/stylesheets/*
 var stylesheetsFiles embed.FS
 
+//go:embed assets/images/*
+var imagesFiles embed.FS
+
 func main() {
 	r := chi.NewRouter()
 
@@ -32,8 +35,10 @@ func main() {
 	// Serve static files
 	javascriptFS, _ := fs.Sub(javascriptFiles, "javascript")
 	stylesheetFS, _ := fs.Sub(stylesheetsFiles, "assets/stylesheets")
+	imagesFS, _ := fs.Sub(imagesFiles, "assets/images")
 	r.Handle("/javascript/*", http.StripPrefix("/javascript/", http.FileServer(http.FS(javascriptFS))))
 	r.Handle("/assets/stylesheets/*", http.StripPrefix("/assets/stylesheets/", http.FileServer(http.FS(stylesheetFS))))
+	r.Handle("/assets/images/*", http.StripPrefix("/assets/images/", http.FileServer(http.FS(imagesFS))))
 
 	r.Get("/", home.Show(templateFiles))
 	r.Get("/containers", containers.Index(templateFiles))

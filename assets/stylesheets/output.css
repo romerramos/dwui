@@ -264,6 +264,9 @@
   .h-3 {
     height: calc(var(--spacing) * 3);
   }
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+  }
   .h-auto {
     height: auto;
   }
@@ -278,6 +281,9 @@
   }
   .w-3 {
     width: calc(var(--spacing) * 3);
+  }
+  .w-12 {
+    width: calc(var(--spacing) * 12);
   }
   .w-full {
     width: 100%;
@@ -518,6 +524,16 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
+    }
+  }
+  .sm\:h-16 {
+    @media (width >= 40rem) {
+      height: calc(var(--spacing) * 16);
+    }
+  }
+  .sm\:w-16 {
+    @media (width >= 40rem) {
+      width: calc(var(--spacing) * 16);
     }
   }
   .sm\:flex-row {

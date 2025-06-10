@@ -13,7 +13,7 @@ type ShowPageData struct {
 func Show(templateFS embed.FS) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		data := ShowPageData{
-			PageTitle: "Docker Web UI",
+			PageTitle: "Dwui",
 		}
 
 		tmpl := template.Must(template.ParseFS(templateFS, "cmd/home/show.gohtml"))

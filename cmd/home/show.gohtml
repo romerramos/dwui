@@ -48,7 +48,14 @@
   </head>
   <body>
     <div class="container flex flex-col mx-auto p-2 sm:p-4 h-svh">
-      <h1 class="text-xl sm:text-2xl font-bold mb-4">{{ .PageTitle }}</h1>
+      <div class="flex items-center mb-4">
+        <img
+          src="/assets/images/dwui.png"
+          alt="Dwui mascot"
+          class="w-12 h-12 sm:w-16 sm:h-16 mr-3"
+        />
+        <h1 class="text-xl sm:text-2xl font-bold">{{ .PageTitle }}</h1>
+      </div>
       <div
         id="containers"
         class="grow overflow-y-hidden"
