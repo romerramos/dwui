@@ -1,9 +1,18 @@
-<div 
-    id="terminal" 
-    class="w-full h-full" 
-    data-container-id="{{.ContainerID}}"
-    x-data="terminal('{{.ContainerID}}')"
+<div class="w-full h-full flex flex-col">
+  <div
+    class="flex items-center justify-between p-2 bg-gray-800 border-b border-gray-600"
+  >
+    <div class="text-sm text-gray-300 font-medium">
+      {{ .ContainerName }}
+    </div>
+    <div class="text-xs text-gray-400">Terminal</div>
+  </div>
+  <div
+    id="terminal"
+    class="flex-1"
+    data-container-id="{{ .ContainerID }}"
+    x-data="terminal('{{ .ContainerID }}')"
     x-init="initTerminal()"
-    x-ref="terminalElement">
+    x-ref="terminalElement"
+  ></div>
 </div>
-    

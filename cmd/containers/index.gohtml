@@ -1,13 +1,17 @@
 {{ if eq (len .Containers) 0 }}
   <p class="bg-gray-200">No containers found.</p>
 {{ else }}
-  <div class="flex flex-col lg:flex-row w-full h-full gap-4">
+  <div
+    class="flex flex-col lg:flex-row w-full h-full gap-4"
+    x-data="{ activeContainer: '' }"
+  >
     <div
       class="flex flex-col space-y-4 w-full lg:w-5/12 h-96 lg:h-full overflow-y-auto"
     >
       {{ range .Containers }}
         <div
-          class="flex flex-col sm:flex-row sm:items-center gap-3 first:border first:border-gray-100 py-2 px-3 rounded mx-2"
+          class="flex flex-col sm:flex-row sm:items-center gap-3 first:border first:border-gray-100 py-2 px-3 rounded mx-2 transition-colors"
+          x-bind:class="activeContainer === '{{ .ID }}' ? 'bg-blue-50 border-blue-200 border-2' : ''"
         >
           <div class="w-full gap-3">
             <div class="flex flex-grow">
@@ -22,20 +26,26 @@
           <div class="flex gap-2 flex-shrink-0">
             <button
               class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
-              hx-get="/logs/{{ .ID }}"
+              hx-get="/logs/{{ .ID }}?name={{ range .Names }}
+                {{ urlquery (shortenName .) }}
+              {{ end }}"
               hx-trigger="click"
               hx-target="#container"
               hx-swap="innerHTML show:#container:top"
+              x-on:click="activeContainer = '{{ .ID }}'"
             >
               Logs
             </button>
 
             <button
               class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
-              hx-get="/terminal/view/{{ .ID }}"
+              hx-get="/terminal/view/{{ .ID }}?name={{ range .Names }}
+                {{ urlquery (shortenName .) }}
+              {{ end }}"
               hx-trigger="click"
               hx-target="#container"
               hx-swap="innerHTML show:#container:top"
+              x-on:click="activeContainer = '{{ .ID }}'"
             >
               Terminal
             </button>

@@ -19,6 +19,10 @@ func shortenID(id string) string {
 }
 
 func shortenName(name string) string {
+	// Remove leading '/' from container name if present
+	if len(name) > 0 && name[0] == '/' {
+		name = name[1:]
+	}
 	return shortenWithAmount(name, 25)
 }
 
@@ -50,6 +54,7 @@ func Index(templateFS embed.FS) http.HandlerFunc {
 		funcMap := template.FuncMap{
 			"shortenID":   shortenID,
 			"shortenName": shortenName,
+			"urlquery":    template.URLQueryEscaper,
 		}
 
 		tmpl := template.Must(template.New("index.gohtml").Funcs(funcMap).ParseFS(templateFS, "cmd/containers/index.gohtml"))
