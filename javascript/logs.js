@@ -8,6 +8,9 @@ export function createLogsComponent() {
     logLines: [], // Array to store individual log lines
     autoScroll: true, // Auto-scroll toggle state
     userScrolledUp: false, // Track if user manually scrolled up
+    fontSize: 14, // Font size in pixels
+    minFontSize: 8, // Minimum font size
+    maxFontSize: 24, // Maximum font size
 
     initLogs() {
       // Initialize with empty logs - WebSocket will populate everything
@@ -52,6 +55,9 @@ export function createLogsComponent() {
       this.$nextTick(() => {
         this.$refs.logsElement.addEventListener("scroll", this.scrollHandler)
 
+        // Apply current font size
+        this.updateFontSize()
+
         // Auto-scroll to bottom only if auto-scroll is enabled and user hasn't scrolled up
         if (this.autoScroll && !this.userScrolledUp) {
           this.scrollToBottom()
@@ -70,6 +76,29 @@ export function createLogsComponent() {
       this.autoScroll = !this.autoScroll
       if (this.autoScroll) {
         this.scrollToBottom()
+      }
+    },
+
+    // Increase font size
+    increaseFontSize() {
+      if (this.fontSize < this.maxFontSize) {
+        this.fontSize += 2
+        this.updateFontSize()
+      }
+    },
+
+    // Decrease font size
+    decreaseFontSize() {
+      if (this.fontSize > this.minFontSize) {
+        this.fontSize -= 2
+        this.updateFontSize()
+      }
+    },
+
+    // Update the font size of the logs element
+    updateFontSize() {
+      if (this.$refs.logsElement) {
+        this.$refs.logsElement.style.fontSize = `${this.fontSize}px`
       }
     },
 

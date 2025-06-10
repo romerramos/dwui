@@ -6,6 +6,24 @@
 >
   <div class="absolute top-1 right-2 flex items-center gap-2">
     <button
+      x-on:click="decreaseFontSize()"
+      class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+      x-bind:disabled="fontSize <= minFontSize"
+      x-bind:class="fontSize <= minFontSize ? 'opacity-50 cursor-not-allowed' : ''"
+      title="Decrease font size"
+    >
+      A-
+    </button>
+    <button
+      x-on:click="increaseFontSize()"
+      class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+      x-bind:disabled="fontSize >= maxFontSize"
+      x-bind:class="fontSize >= maxFontSize ? 'opacity-50 cursor-not-allowed' : ''"
+      title="Increase font size"
+    >
+      A+
+    </button>
+    <button
       x-on:click="toggleAutoScroll()"
       class="text-xs px-2 py-1 rounded border transition-colors"
       x-bind:class="autoScroll ? 'bg-blue-500 text-white border-blue-500' : 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600'"
