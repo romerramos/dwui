@@ -54,7 +54,7 @@ func Index(templateFS embed.FS) http.HandlerFunc {
 		funcMap := template.FuncMap{
 			"shortenID":   shortenID,
 			"shortenName": shortenName,
-			"urlquery":    template.URLQueryEscaper,
+			"urlQuery":    template.URLQueryEscaper,
 		}
 
 		tmpl := template.Must(template.New("index.gohtml").Funcs(funcMap).ParseFS(templateFS, "cmd/containers/index.gohtml"))

@@ -56,11 +56,6 @@
   </div>
 
   <div class="absolute top-1 right-2 flex items-center gap-2">
-    <div
-      class="text-sm text-white font-medium px-2 py-1 bg-gray-700 rounded border border-gray-600"
-    >
-      {{ .ContainerName }}
-    </div>
     <button
       x-on:click="toggleSearch()"
       class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
@@ -98,10 +93,13 @@
     <div x-show="!isConnected" class="text-red-400 text-xs">●</div>
   </div>
 
+  <div class="text-[8px] sm:text-xs text-white font-medium px-2 pb-1">
+    {{ .ContainerName }}
+  </div>
   <pre
     x-ref="logsElement"
     class="overflow-x-auto flex-1 rounded font-mono whitespace-pre leading-tight"
   >
-{{ .Content }}</pre
-  >
+    {{ .Content }}
+  </pre>
 </div>

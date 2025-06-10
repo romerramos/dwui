@@ -27,7 +27,7 @@
             <button
               class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
               hx-get="/logs/{{ .ID }}?name={{ range .Names }}
-                {{ urlquery (shortenName .) }}
+                {{ urlQuery (shortenName .) }}
               {{ end }}"
               hx-trigger="click"
               hx-target="#container"
@@ -40,7 +40,7 @@
             <button
               class="bg-gray-800 hover:bg-black text-white font-bold py-1 px-3 rounded text-sm cursor-pointer"
               hx-get="/terminal/view/{{ .ID }}?name={{ range .Names }}
-                {{ urlquery (shortenName .) }}
+                {{ urlQuery (shortenName .) }}
               {{ end }}"
               hx-trigger="click"
               hx-target="#container"
@@ -55,7 +55,7 @@
     </div>
     <code
       id="container"
-      class="relative flex w-full lg:w-7/12 bg-gray-800 text-white p-5 rounded min-h-96 h-full lg:h-full text-sm"
+      class="relative flex w-full lg:w-7/12 bg-gray-800 text-white p-3 rounded min-h-96 h-full lg:h-full text-sm"
     >
       <---- Choose a container on the list
     </code>
