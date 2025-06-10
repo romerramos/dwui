@@ -4,7 +4,15 @@
   x-init="initLogs()"
   x-on:beforeunload.window="destroy()"
 >
-  <div class="absolute top-1 right-2">
+  <div class="absolute top-1 right-2 flex items-center gap-2">
+    <button
+      x-on:click="toggleAutoScroll()"
+      class="text-xs px-2 py-1 rounded border transition-colors"
+      x-bind:class="autoScroll ? 'bg-blue-500 text-white border-blue-500' : 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600'"
+      x-bind:title="autoScroll ? 'Auto-scroll ON - Click to disable' : 'Auto-scroll OFF - Click to enable and scroll to bottom'"
+    >
+      <span x-text="autoScroll ? '📜 ON' : '📜 OFF'"></span>
+    </button>
     <div x-show="isConnected" class="text-green-400 text-xs">●</div>
     <div x-show="!isConnected" class="text-red-400 text-xs">●</div>
   </div>

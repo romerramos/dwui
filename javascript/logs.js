@@ -6,7 +6,8 @@ export function createLogsComponent() {
     containerId: containerId,
     logs: "",
     logLines: [], // Array to store individual log lines
-    maxLines: 50, // Maximum number of lines to display (matches WebSocket initial)
+    autoScroll: true, // Auto-scroll toggle state
+    userScrolledUp: false, // Track if user manually scrolled up
 
     initLogs() {
       // Initialize with empty logs - WebSocket will populate everything
@@ -15,6 +16,11 @@ export function createLogsComponent() {
 
       // Start WebSocket connection immediately
       this.connectWebSocket()
+
+      // Add scroll event listener to detect user scrolling
+      this.scrollHandler = () => {
+        this.handleScroll()
+      }
 
       // Handle page visibility for reconnection
       this.visibilityHandler = () => {
@@ -25,26 +31,56 @@ export function createLogsComponent() {
       document.addEventListener("visibilitychange", this.visibilityHandler)
     },
 
+    // Handle scroll events to detect if user scrolled up
+    handleScroll() {
+      const element = this.$refs.logsElement
+      const isAtBottom =
+        element.scrollTop + element.clientHeight >= element.scrollHeight - 5
+      this.userScrolledUp = !isAtBottom
+
+      // Turn off auto-scroll when user manually scrolls up
+      if (this.userScrolledUp && this.autoScroll) {
+        this.autoScroll = false
+      }
+    },
+
     // Helper method to update the display with current log lines
     updateDisplay() {
       this.$refs.logsElement.textContent = this.logLines.join("\n")
-      // Auto-scroll to bottom
-      this.$refs.logsElement.scrollTop = this.$refs.logsElement.scrollHeight
+
+      // Add scroll event listener after content is updated
+      this.$nextTick(() => {
+        this.$refs.logsElement.addEventListener("scroll", this.scrollHandler)
+
+        // Auto-scroll to bottom only if auto-scroll is enabled and user hasn't scrolled up
+        if (this.autoScroll && !this.userScrolledUp) {
+          this.scrollToBottom()
+        }
+      })
     },
 
-    // Helper method to add new lines while maintaining the limit
+    // Scroll to bottom method
+    scrollToBottom() {
+      this.$refs.logsElement.scrollTop = this.$refs.logsElement.scrollHeight
+      this.userScrolledUp = false
+    },
+
+    // Toggle auto-scroll and scroll to bottom if enabling
+    toggleAutoScroll() {
+      this.autoScroll = !this.autoScroll
+      if (this.autoScroll) {
+        this.scrollToBottom()
+      }
+    },
+
+    // Helper method to add new lines
     addLogLines(newContent) {
       const newLines = newContent
         .split("\n")
         .filter((line) => line.trim() !== "")
 
-      // Add new lines to the array
+      // Add new lines to the array (no limit)
       this.logLines.push(...newLines)
-
-      // Keep only the last maxLines
-      if (this.logLines.length > this.maxLines) {
-        this.logLines = this.logLines.slice(-this.maxLines)
-      }
 
       this.updateDisplay()
     },
@@ -97,6 +133,9 @@ export function createLogsComponent() {
       }
       if (this.visibilityHandler) {
         document.removeEventListener("visibilitychange", this.visibilityHandler)
+      }
+      if (this.scrollHandler && this.$refs.logsElement) {
+        this.$refs.logsElement.removeEventListener("scroll", this.scrollHandler)
       }
     },
   })

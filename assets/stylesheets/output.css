@@ -15,7 +15,9 @@
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
+    --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-gray-600: oklch(44.6% 0.03 256.802);
+    --color-gray-700: oklch(37.3% 0.034 259.733);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-black: #000;
     --color-white: #fff;
@@ -32,6 +34,8 @@
     --text-2xl--line-height: calc(2 / 1.5);
     --font-weight-bold: 700;
     --leading-tight: 1.25;
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -299,6 +303,9 @@
   .flex-col {
     flex-direction: column;
   }
+  .items-center {
+    align-items: center;
+  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
@@ -339,11 +346,20 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .border-blue-500 {
+    border-color: var(--color-blue-500);
+  }
+  .border-gray-600 {
+    border-color: var(--color-gray-600);
+  }
   .bg-blue-500 {
     background-color: var(--color-blue-500);
   }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
+  }
+  .bg-gray-700 {
+    background-color: var(--color-gray-700);
   }
   .bg-gray-800 {
     background-color: var(--color-gray-800);
@@ -371,6 +387,9 @@
   }
   .p-9 {
     padding: calc(var(--spacing) * 9);
+  }
+  .px-2 {
+    padding-inline: calc(var(--spacing) * 2);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -410,6 +429,9 @@
   .whitespace-pre {
     white-space: pre;
   }
+  .text-gray-300 {
+    color: var(--color-gray-300);
+  }
   .text-green-400 {
     color: var(--color-green-400);
   }
@@ -426,6 +448,11 @@
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
   }
+  .transition-colors {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
   .first\:border {
     &:first-child {
       border-style: var(--tw-border-style);
@@ -441,6 +468,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-black);
+      }
+    }
+  }
+  .hover\:bg-gray-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-600);
       }
     }
   }
