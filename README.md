@@ -23,9 +23,10 @@ go run main.go --password yourpassword
 ```
 
 # Development
+Run in separate terminals:
 
-`air`
-`npx @tailwindcss/cli -i ./tailwind.css -o ./assets/stylesheets/output.css --watch`
+- `air`
+- `npx @tailwindcss/cli -i ./tailwind.css -o ./assets/stylesheets/output.css --watch`
 
 # Build
 
