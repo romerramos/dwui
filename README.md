@@ -35,3 +35,8 @@ Linux: `GOOS=linux GOARCH=amd64 go build -o dwui-linux`
 # Deploy
 
 The main branch should contain the latest build in the root of the repo, e.g: `dwui-linux`, scp/clone/ftp/move that file to a server running docker and execute it and that's it!
+
+```bash
+./dwui-linux --password yourpassword
+```
+
