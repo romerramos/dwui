@@ -15,6 +15,7 @@ import (
 
 	"github.com/dwui/cmd/auth"
 	"github.com/dwui/cmd/containers"
+	"github.com/dwui/cmd/database"
 	"github.com/dwui/cmd/home"
 	"github.com/dwui/cmd/inspect"
 	"github.com/dwui/cmd/logs"
@@ -55,6 +56,7 @@ func main() {
 		fmt.Printf("🌐 Server will be available at: http://localhost:8080\n\n")
 	}
 
+	database.Init()
 	auth.SetPassword(password)
 
 	// Set up graceful shutdown
@@ -63,7 +65,7 @@ func main() {
 	go func() {
 		<-c
 		fmt.Println("\n🛑 Gracefully shutting down...")
-		auth.CloseDB() // Close BadgerDB before exit
+		database.Instance.Close() // Close BadgerDB before exit
 		os.Exit(0)
 	}()
 

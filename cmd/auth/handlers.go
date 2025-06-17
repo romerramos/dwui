@@ -3,13 +3,15 @@ package auth
 import (
 	"embed"
 	"html/template"
+	"log"
 	"net/http"
+
+	"github.com/dwui/cmd/session"
 )
 
 // SignInData holds data for the sign-in template
 type SignInData struct {
-	PageTitle string
-	Error     string
+	Error string
 }
 
 // ShowSignIn displays the sign-in page
@@ -21,9 +23,7 @@ func ShowSignIn(templateFiles embed.FS) http.HandlerFunc {
 			return
 		}
 
-		data := SignInData{
-			PageTitle: "Docker Web UI - Sign In",
-		}
+		data := SignInData{}
 
 		// Check for error in query params
 		if errorMsg := r.URL.Query().Get("error"); errorMsg != "" {
@@ -37,7 +37,6 @@ func ShowSignIn(templateFiles embed.FS) http.HandlerFunc {
 	}
 }
 
-// HandleSignIn processes the sign-in form submission
 func HandleSignIn() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -51,17 +50,13 @@ func HandleSignIn() http.HandlerFunc {
 			return
 		}
 
-		// Create session
-		sessionToken, err := CreateSession()
+		err := session.Create(w)
 		if err != nil {
+			log.Printf("failed to create session: %v", err)
 			http.Error(w, "Failed to create session", http.StatusInternalServerError)
 			return
 		}
 
-		// Set session cookie
-		SetSessionCookie(w, sessionToken)
-
-		// Redirect to home page
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }
@@ -69,15 +64,9 @@ func HandleSignIn() http.HandlerFunc {
 // HandleSignOut processes sign-out requests
 func HandleSignOut() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get session cookie
-		if cookie, err := r.Cookie(sessionCookieName); err == nil {
-			ClearSession(cookie.Value)
+		if cookie, err := r.Cookie(session.SessionCookieName); err == nil {
+			session.Clear(w, cookie.Value)
 		}
-
-		// Clear session cookie
-		ClearSessionCookie(w)
-
-		// Redirect to sign-in page
 		http.Redirect(w, r, "/signin", http.StatusSeeOther)
 	}
 }

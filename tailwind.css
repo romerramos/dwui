@@ -2,5 +2,5 @@
 @source "../**/*.html";
 
 @theme {
-    --font-mono: "font", JetBrains Mono;
+  --font-mono: "font", JetBrains Mono;
 }
