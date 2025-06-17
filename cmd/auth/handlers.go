@@ -9,12 +9,10 @@ import (
 	"github.com/dwui/cmd/session"
 )
 
-// SignInData holds data for the sign-in template
 type SignInData struct {
 	Error string
 }
 
-// ShowSignIn displays the sign-in page
 func ShowSignIn(templateFiles embed.FS) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.ParseFS(templateFiles, "cmd/auth/signin.gohtml")
@@ -25,7 +23,6 @@ func ShowSignIn(templateFiles embed.FS) http.HandlerFunc {
 
 		data := SignInData{}
 
-		// Check for error in query params
 		if errorMsg := r.URL.Query().Get("error"); errorMsg != "" {
 			data.Error = "Invalid password. Please try again."
 		}
@@ -61,7 +58,6 @@ func HandleSignIn() http.HandlerFunc {
 	}
 }
 
-// HandleSignOut processes sign-out requests
 func HandleSignOut() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if cookie, err := r.Cookie(session.SessionCookieName); err == nil {

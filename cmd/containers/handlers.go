@@ -14,25 +14,6 @@ type IndexPageData struct {
 	Containers []containertypes.Summary
 }
 
-func shortenID(id string) string {
-	return shortenWithAmount(id, 12)
-}
-
-func shortenName(name string) string {
-	// Remove leading '/' from container name if present
-	if len(name) > 0 && name[0] == '/' {
-		name = name[1:]
-	}
-	return shortenWithAmount(name, 25)
-}
-
-func shortenWithAmount(text string, amount int) string {
-	if len(text) > amount {
-		return text[:amount]
-	}
-	return text
-}
-
 func Index(templateFS embed.FS) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		ctx := context.Background()
@@ -52,8 +33,8 @@ func Index(templateFS embed.FS) http.HandlerFunc {
 		}
 
 		funcMap := template.FuncMap{
-			"shortenID":   shortenID,
-			"shortenName": shortenName,
+			"shortenID":   ShortenID,
+			"shortenName": ShortenName,
 			"urlQuery":    template.URLQueryEscaper,
 		}
 
