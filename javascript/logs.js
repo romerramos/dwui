@@ -38,6 +38,16 @@ export function createLogsComponent(containerId) {
         }
       }
       document.addEventListener("visibilitychange", this.visibilityHandler)
+
+      this.keyDownHandler = (event) => {
+        if (event.key === "f" && (event.ctrlKey || event.metaKey)) {
+          event.preventDefault()
+          event.stopPropagation()
+          this.toggleSearch()
+        }
+      }
+
+      document.addEventListener("keydown", this.keyDownHandler)
     },
 
     updateDisplay() {
@@ -69,7 +79,8 @@ export function createLogsComponent(containerId) {
     connectWebSocket() {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
 
-      // When running in dev mode the port 8082 is used for `air` live-reload, but the sockets are running on 8080
+      // When running in dev mode the port 8082 is used for `air` live-reload,
+      // but the sockets are running on 8080
       const locationHost = window.location.host.includes("8082")
         ? window.location.host.replace("8082", "8080")
         : window.location.host
@@ -290,6 +301,9 @@ export function createLogsComponent(containerId) {
       }
       if (this.scrollHandler && this.$refs.logsElement) {
         this.$refs.logsElement.removeEventListener("scroll", this.scrollHandler)
+      }
+      if (this.keyDownHandler) {
+        document.removeEventListener("keydown", this.keyDownHandler)
       }
     },
   }

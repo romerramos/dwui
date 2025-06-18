@@ -3,8 +3,6 @@
   x-data="logsComponent('{{ .ContainerID }}')"
   x-init="initLogs()"
   x-on:beforeunload.window="destroy()"
-  x-on:keydown.ctrl.f.prevent="toggleSearch()"
-  x-on:keydown.cmd.f.prevent="toggleSearch()"
   x-on:keydown.escape="hideSearch()"
 >
   <!-- Search Bar -->
