@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/dwui/cmd/containers"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -19,18 +20,12 @@ func Show(templateFS embed.FS) http.HandlerFunc {
 		var containerID = chi.URLParam(req, "containerID")
 		var containerName = req.URL.Query().Get("name")
 
-		// Fallback to shortened ID if name is not provided
 		if containerName == "" {
-			if len(containerID) > 12 {
-				containerName = containerID[:12]
-			} else {
-				containerName = containerID
-			}
+			containerName = containers.ShortenID(containerID)
 		}
 
-		// Just render the template with empty content - WebSocket will handle all logs
 		data := ShowPageData{
-			Content:       "", // Empty - WebSocket will populate
+			Content:       "",
 			ContainerID:   containerID,
 			ContainerName: containerName,
 		}

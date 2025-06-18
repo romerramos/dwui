@@ -1,6 +1,7 @@
 // Logs Alpine.js component for streaming container logs
-export function createLogsComponent() {
-  return (containerId) => ({
+
+export function createLogsComponent(containerId) {
+  return {
     socket: null,
     isConnected: false,
     containerId: containerId,
@@ -18,21 +19,19 @@ export function createLogsComponent() {
     searchMatches: [],
     currentMatchIndex: 0,
     highlightedContent: "",
+    shiftKeyPressed: false,
 
     initLogs() {
-      // Initialize with empty logs - WebSocket will populate everything
       this.logLines = []
-      this.updateDisplay()
 
-      // Start WebSocket connection immediately
+      this.updateDisplay()
       this.connectWebSocket()
 
-      // Add scroll event listener to detect user scrolling
-      this.scrollHandler = () => {
-        this.handleScroll()
-      }
+      // For binding `this` into the Alpine.js component
+      // and cleaning the event listener when the component is destroyed
+      this.scrollHandler = () => this.handleScroll()
+      this.$refs.logsElement.addEventListener("scroll", this.scrollHandler)
 
-      // Handle page visibility for reconnection
       this.visibilityHandler = () => {
         if (!document.hidden && !this.isConnected) {
           this.connectWebSocket()
@@ -41,102 +40,36 @@ export function createLogsComponent() {
       document.addEventListener("visibilitychange", this.visibilityHandler)
     },
 
-    // Handle scroll events to detect if user scrolled up
-    handleScroll() {
-      const element = this.$refs.logsElement
-      const isAtBottom =
-        element.scrollTop + element.clientHeight >= element.scrollHeight - 5
-      this.userScrolledUp = !isAtBottom
-
-      // Turn off auto-scroll when user manually scrolls up
-      if (this.userScrolledUp && this.autoScroll) {
-        this.autoScroll = false
-      }
-    },
-
-    // Helper method to update the display with current log lines
     updateDisplay() {
       const content = this.logLines.join("\n")
 
       if (this.searchQuery && this.searchMatches.length > 0) {
-        // Use highlighted content if search is active
         this.$refs.logsElement.innerHTML = this.highlightedContent
       } else {
-        // Use plain text content
         this.$refs.logsElement.textContent = content
       }
 
-      // Add scroll event listener after content is updated
-      this.$nextTick(() => {
-        this.$refs.logsElement.addEventListener("scroll", this.scrollHandler)
-
-        // Apply current font size
-        this.updateFontSize()
-
-        // Auto-scroll to bottom only if auto-scroll is enabled and user hasn't scrolled up
-        if (this.autoScroll && !this.userScrolledUp) {
-          this.scrollToBottom()
-        }
-      })
-    },
-
-    // Scroll to bottom method
-    scrollToBottom() {
-      this.$refs.logsElement.scrollTop = this.$refs.logsElement.scrollHeight
-      this.userScrolledUp = false
-    },
-
-    // Toggle auto-scroll and scroll to bottom if enabling
-    toggleAutoScroll() {
-      this.autoScroll = !this.autoScroll
-      if (this.autoScroll) {
+      this.updateFontSize()
+      if (this.autoScroll && !this.userScrolledUp) {
         this.scrollToBottom()
       }
     },
 
-    // Increase font size
-    increaseFontSize() {
-      if (this.fontSize < this.maxFontSize) {
-        this.fontSize += 2
-        this.updateFontSize()
-      }
-    },
-
-    // Decrease font size
-    decreaseFontSize() {
-      if (this.fontSize > this.minFontSize) {
-        this.fontSize -= 2
-        this.updateFontSize()
-      }
-    },
-
-    // Update the font size of the logs element
     updateFontSize() {
       if (this.$refs.logsElement) {
         this.$refs.logsElement.style.fontSize = `${this.fontSize}px`
       }
     },
 
-    // Helper method to add new lines
-    addLogLines(newContent) {
-      const newLines = newContent
-        .split("\n")
-        .filter((line) => line.trim() !== "")
-
-      // Add new lines to the array (no limit)
-      this.logLines.push(...newLines)
-
-      this.updateDisplay()
-
-      // Refresh search if active
-      if (this.searchQuery) {
-        this.performSearch()
-      }
+    scrollToBottom() {
+      this.$refs.logsElement.scrollTop = this.$refs.logsElement.scrollHeight
+      this.userScrolledUp = false
     },
 
     connectWebSocket() {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
 
+      // When running in dev mode the port 8082 is used for `air` live-reload, but the sockets are running on 8080
       const locationHost = window.location.host.includes("8082")
         ? window.location.host.replace("8082", "8080")
         : window.location.host
@@ -153,7 +86,6 @@ export function createLogsComponent() {
       this.socket.onmessage = (event) => {
         const logData = event.data
         if (logData.trim()) {
-          // All messages are new streaming logs, add them
           this.addLogLines(logData)
         }
       }
@@ -164,8 +96,6 @@ export function createLogsComponent() {
         this.addLogLines(
           "\n--- Connection lost. Attempting to reconnect... ---",
         )
-
-        // Attempt to reconnect after 3 seconds
         setTimeout(() => this.connectWebSocket(), 3000)
       }
 
@@ -175,22 +105,20 @@ export function createLogsComponent() {
       }
     },
 
-    // Search functionality methods
-    toggleSearch() {
-      this.showSearch = !this.showSearch
-      if (this.showSearch) {
-        this.$nextTick(() => {
-          this.$refs.searchInput.focus()
-        })
-      } else {
-        this.hideSearch()
-      }
-    },
+    addLogLines(newContent) {
+      const newLines = newContent
+        .split("\n")
+        .filter((line) => line.trim() !== "")
 
-    hideSearch() {
-      this.showSearch = false
-      this.searchQuery = ""
-      this.clearSearch()
+      // Add new lines to the array (no limit)
+      this.logLines.push(...newLines)
+
+      this.updateDisplay()
+
+      // Refresh search if active
+      if (this.searchQuery) {
+        this.performSearch()
+      }
     },
 
     performSearch() {
@@ -199,13 +127,10 @@ export function createLogsComponent() {
         return
       }
 
-      const content = this.logLines.join("\n")
       const query = this.searchQuery.toLowerCase()
       const matches = []
-      const lines = content.split("\n")
 
-      // Find all matches and their positions
-      lines.forEach((line, lineIndex) => {
+      this.logLines.forEach((line, lineIndex) => {
         const lowerLine = line.toLowerCase()
         let index = 0
         while ((index = lowerLine.indexOf(query, index)) !== -1) {
@@ -229,6 +154,13 @@ export function createLogsComponent() {
       }
     },
 
+    clearSearch() {
+      this.searchMatches = []
+      this.currentMatchIndex = 0
+      this.highlightedContent = ""
+      this.updateDisplay()
+    },
+
     highlightMatches() {
       if (!this.searchQuery || this.searchMatches.length === 0) {
         return
@@ -238,13 +170,11 @@ export function createLogsComponent() {
       const query = this.searchQuery
       const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
-      // First escape HTML entities
       let safeContent = content
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
 
-      // Then highlight matches
       let matchCount = 0
       const highlightedContent = safeContent.replace(
         new RegExp(escapedQuery, "gi"),
@@ -261,7 +191,58 @@ export function createLogsComponent() {
       this.highlightedContent = highlightedContent
     },
 
+    handleScroll() {
+      const element = this.$refs.logsElement
+      const isAtBottom =
+        element.scrollTop + element.clientHeight >= element.scrollHeight - 5
+      this.userScrolledUp = !isAtBottom
+
+      if (this.userScrolledUp && this.autoScroll) {
+        this.autoScroll = false
+      }
+    },
+
+    toggleAutoScroll() {
+      this.autoScroll = !this.autoScroll
+      if (this.autoScroll) {
+        this.scrollToBottom()
+      }
+    },
+
+    increaseFontSize() {
+      if (this.fontSize < this.maxFontSize) {
+        this.fontSize += 2
+        this.updateFontSize()
+      }
+    },
+
+    decreaseFontSize() {
+      if (this.fontSize > this.minFontSize) {
+        this.fontSize -= 2
+        this.updateFontSize()
+      }
+    },
+
+    // Search functionality methods
+    toggleSearch() {
+      this.showSearch = !this.showSearch
+      if (this.showSearch) {
+        this.$nextTick(() => {
+          this.$refs.searchInput.focus()
+        })
+      } else {
+        this.hideSearch()
+      }
+    },
+
+    hideSearch() {
+      this.showSearch = false
+      this.searchQuery = ""
+      this.clearSearch()
+    },
+
     findNext() {
+      if (this.shiftKeyPressed) return
       if (this.searchMatches.length === 0) return
 
       this.currentMatchIndex =
@@ -299,13 +280,6 @@ export function createLogsComponent() {
       })
     },
 
-    clearSearch() {
-      this.searchMatches = []
-      this.currentMatchIndex = 0
-      this.highlightedContent = ""
-      this.updateDisplay()
-    },
-
     // Cleanup when component is destroyed
     destroy() {
       if (this.socket) {
@@ -318,5 +292,5 @@ export function createLogsComponent() {
         this.$refs.logsElement.removeEventListener("scroll", this.scrollHandler)
       }
     },
-  })
+  }
 }

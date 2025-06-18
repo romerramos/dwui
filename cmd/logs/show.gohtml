@@ -17,8 +17,8 @@
         x-ref="searchInput"
         x-model="searchQuery"
         x-on:input="performSearch()"
-        x-on:keydown.enter.prevent="findNext()"
-        x-on:keydown.shift.enter.prevent="findPrevious()"
+        @keydown.shift.enter.prevent="findPrevious(); shiftKeyPressed = true"
+        @keydown.enter.prevent="findNext(); shiftKeyPressed = false"
         class="flex-1 px-2 py-1 text-sm bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:border-blue-500"
         placeholder="Search logs... (Enter: next, Shift+Enter: previous, Esc: close)"
       />
