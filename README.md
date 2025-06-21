@@ -23,6 +23,7 @@ go run main.go --password yourpassword
 ```
 
 # Development
+
 Run in separate terminals:
 
 - `air`
@@ -34,9 +35,14 @@ Linux: `GOOS=linux GOARCH=amd64 go build -o dwui-linux`
 
 # Deploy
 
-The main branch should contain the latest build in the root of the repo, e.g: `dwui-linux`, scp/clone/ftp/move that file to a server running docker and execute it and that's it!
+The main branch should contain the latest build in the root of the repo, e.g: `dwui-linux`, scp/clone/ftp/move that file to a server running docker, execute it and that's it!
 
 ```bash
 ./dwui-linux --password yourpassword
 ```
 
+## License
+
+This project is licensed under the AGPL v3.0 license. See the [LICENSE](LICENSE) file for more details.
+
+Copyright (C) 2025 Romer Ramos
