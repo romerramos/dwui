@@ -1,6 +1,8 @@
 # DWUI: Docker Web UI
 
-![DWUI Logo](assets/images/dwui.png)
+<p align="center">
+  <img src="assets/images/dwui.png" alt="DWUI Logo" width="40%">
+</p>
 
 DWUI is a simple web interface for Docker that gives you a "Docker Desktop" like experience, right on your server. It's designed to be lightweight, easy to use, and a perfect companion for deployment tools like [Kamal](https://kamal-deploy.org/).
 
