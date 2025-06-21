@@ -34,7 +34,7 @@ You can download and run DWUI with a single command.
 
 ```bash
 # Download the binary for Linux
-curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.1.0/dwui-linux
+curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.0.1/dwui-linux
 
 # Make it executable
 chmod +x dwui-linux
@@ -53,7 +53,7 @@ For a more permanent setup on Linux servers using `systemd`, you can run DWUI as
 
     ```bash
     # Download the binary
-    curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.1.0/dwui-linux
+    curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.0.1/dwui-linux
     chmod +x dwui-linux
 
     # Move it to a directory in your PATH
