@@ -30,8 +30,6 @@ Born out of a need for a no-fuss container management tool, DWUI aims to be simp
 
 You can download and run DWUI with a single command.
 
-> **Note**: You will need to create a release on GitHub for this URL to be valid. Please replace `v0.1.0` with your desired release version and `romerramos/dwui` with your repository path if it's different.
-
 ```bash
 # Download the binary for Linux
 curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.0.1/dwui-linux
