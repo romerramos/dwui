@@ -65,11 +65,9 @@ func main() {
 		}
 		password = generatedPassword
 		fmt.Printf("\n🔐 DWUI Authentication Password: %s\n", password)
-		fmt.Printf("🌐 Server will be available at: http://localhost:8080\n")
 		fmt.Printf("💡 Use this password to sign in to the web interface\n\n")
 	} else {
 		fmt.Printf("🔐 Using provided password for authentication\n")
-		fmt.Printf("🌐 Server will be available at: http://localhost:8080\n\n")
 	}
 
 	database.Init()
@@ -115,8 +113,8 @@ func main() {
 		r.Get("/inspect/{containerID}", inspect.Show(templateFiles))
 	})
 
-	fmt.Println("Starting server on :8080")
-	err := http.ListenAndServe(":8080", r)
+	fmt.Println("Starting server on :8300")
+	err := http.ListenAndServe(":8300", r)
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 	}

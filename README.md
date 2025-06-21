@@ -6,11 +6,13 @@
 
 DWUI is a simple web interface for Docker that gives you a "Docker Desktop" like experience, right on your server. It's designed to be lightweight, easy to use, and a perfect companion for deployment tools like [Kamal](https://kamal-deploy.org/).
 
-Born out of a need for a no-fuss container management tool and a passion for learning Go, DWUI aims to be simple, effective, and open to the community.
+Born out of a need for a no-fuss container management tool, DWUI aims to be simple, effective, and open to the community.
 
-## Screenshot
+## In Action
 
-_(A screenshot of the UI will be added here soon.)_
+<p align="center">
+  <img src="assets/images/dwui.gif" alt="DWUI Logo">
+</p>
 
 ## Features
 
@@ -41,7 +43,7 @@ chmod +x dwui-linux
 ./dwui-linux --password your-very-secure-password
 ```
 
-The server will be available at `http://<your-server-ip>:8080`.
+The server will be available at `http://<your-server-ip>:8300`.
 
 ### Running as a Service (systemd)
 

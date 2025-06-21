@@ -81,7 +81,7 @@ export function createTerminalComponent() {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
 
       const locationHost = window.location.host.includes("8082")
-        ? window.location.host.replace("8082", "8080")
+        ? window.location.host.replace("8082", "8300")
         : window.location.host
 
       const wsUrl = `${protocol}//${locationHost}/terminal/${this.containerId}`

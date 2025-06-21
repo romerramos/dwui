@@ -95,9 +95,9 @@ export function createLogsComponent(containerId) {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
 
       // When running in dev mode the port 8082 is used for `air` live-reload,
-      // but the sockets are running on 8080
+      // but the sockets are running on 8300
       const locationHost = window.location.host.includes("8082")
-        ? window.location.host.replace("8082", "8080")
+        ? window.location.host.replace("8082", "8300")
         : window.location.host
 
       const wsUrl = `${protocol}//${locationHost}/logs/stream/${this.containerId}`
