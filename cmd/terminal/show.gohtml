@@ -29,5 +29,8 @@
     class="flex-1"
     data-container-id="{{ .ContainerID }}"
     x-data="terminal('{{ .ContainerID }}')"
+    x-on:resize.window.debounce.150ms="handleResize()"
+    x-on:visibilitychange.document="handleVisibilityChange()"
+    x-on:beforeunload.window="destroy()"
   ></div>
 </div>

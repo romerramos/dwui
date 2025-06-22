@@ -23,6 +23,16 @@ export default (containerId) => {
     containerId: containerId,
     fitAddon: null,
 
+    handleResize() {
+      this.fitAddon.fit()
+    },
+
+    handleVisibilityChange() {
+      if (!document.hidden && !this.isConnected) {
+        this.connectWebSocket()
+      }
+    },
+
     init() {
       // Initialize xterm.js
       this.terminal = new Terminal({
@@ -57,20 +67,6 @@ export default (containerId) => {
           this.socket.send(data)
         }
       })
-
-      // Handle window resize
-      this.resizeHandler = () => {
-        this.fitAddon.fit()
-      }
-      window.addEventListener("resize", this.resizeHandler)
-
-      // Handle page visibility for reconnection
-      this.visibilityHandler = () => {
-        if (!document.hidden && !this.isConnected) {
-          this.connectWebSocket()
-        }
-      }
-      document.addEventListener("visibilitychange", this.visibilityHandler)
 
       // Start connection
       this.connectWebSocket()
@@ -120,12 +116,6 @@ export default (containerId) => {
     destroy() {
       if (this.socket) {
         this.socket.close()
-      }
-      if (this.resizeHandler) {
-        window.removeEventListener("resize", this.resizeHandler)
-      }
-      if (this.visibilityHandler) {
-        document.removeEventListener("visibilitychange", this.visibilityHandler)
       }
     },
   }
