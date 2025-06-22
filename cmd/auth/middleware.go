@@ -27,6 +27,11 @@ func RequireAuth(next http.Handler) http.Handler {
 
 		cookie, err := r.Cookie(session.SessionCookieName)
 		if err != nil || !session.Validate(cookie.Value) {
+			if r.Header.Get("HX-Request") == "true" {
+				w.Header().Set("HX-Redirect", "/signin")
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
 			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 			return
 		}
