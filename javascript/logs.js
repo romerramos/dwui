@@ -36,33 +36,17 @@ export default (containerId) => {
     highlightedContent: "",
     shiftKeyPressed: false,
 
+    handleVisibilityChange() {
+      if (!document.hidden && !this.isConnected) {
+        this.connectWebSocket()
+      }
+    },
+
     init() {
       this.logLines = []
 
       this.updateDisplay()
       this.connectWebSocket()
-
-      // For binding `this` into the Alpine.js component
-      // and cleaning the event listener when the component is destroyed
-      this.scrollHandler = () => this.handleScroll()
-      this.$refs.logsElement.addEventListener("scroll", this.scrollHandler)
-
-      this.visibilityHandler = () => {
-        if (!document.hidden && !this.isConnected) {
-          this.connectWebSocket()
-        }
-      }
-      document.addEventListener("visibilitychange", this.visibilityHandler)
-
-      this.keyDownHandler = (event) => {
-        if (event.key === "f" && (event.ctrlKey || event.metaKey)) {
-          event.preventDefault()
-          event.stopPropagation()
-          this.toggleSearch()
-        }
-      }
-
-      document.addEventListener("keydown", this.keyDownHandler)
     },
 
     updateDisplay() {
@@ -310,15 +294,6 @@ export default (containerId) => {
     destroy() {
       if (this.socket) {
         this.socket.close()
-      }
-      if (this.visibilityHandler) {
-        document.removeEventListener("visibilitychange", this.visibilityHandler)
-      }
-      if (this.scrollHandler && this.$refs.logsElement) {
-        this.$refs.logsElement.removeEventListener("scroll", this.scrollHandler)
-      }
-      if (this.keyDownHandler) {
-        document.removeEventListener("keydown", this.keyDownHandler)
       }
     },
   }

@@ -19,7 +19,10 @@
   class="flex flex-col h-full w-full font-mono"
   x-data="logs('{{ .ContainerID }}')"
   x-on:beforeunload.window="destroy()"
-  x-on:keydown.escape="hideSearch()"
+  x-on:keydown.escape.window="hideSearch()"
+  x-on:keydown.window.prevent.stop.ctrl.f="toggleSearch()"
+  x-on:keydown.window.prevent.stop.meta.f="toggleSearch()"
+  x-on:visibilitychange.document="handleVisibilityChange()"
 >
   <!-- Search Bar -->
   <div
@@ -113,6 +116,7 @@
   <pre
     x-ref="logsElement"
     class="overflow-x-auto flex-1 rounded font-mono whitespace-pre leading-tight"
+    x-on:scroll.debounce.150ms="handleScroll()"
   >
     {{ .Content }}
   </pre>
