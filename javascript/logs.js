@@ -25,7 +25,7 @@ export default (containerId) => {
     autoScroll: true, // Auto-scroll toggle state
     userScrolledUp: false, // Track if user manually scrolled up
     fontSize: 12, // Font size in pixels
-    minFontSize: 8, // Minimum font size
+    minFontSize: 6, // Minimum font size
     maxFontSize: 24, // Maximum font size
 
     // Search functionality

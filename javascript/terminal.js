@@ -22,6 +22,9 @@ export default (containerId) => {
     isConnected: false,
     containerId: containerId,
     fitAddon: null,
+    fontSize: 12,
+    minFontSize: 6,
+    maxFontSize: 24,
 
     handleResize() {
       this.fitAddon.fit()
@@ -38,7 +41,7 @@ export default (containerId) => {
       this.terminal = new Terminal({
         cursorBlink: true,
         fontFamily: "JetBrains Mono, Fira Code, Courier New, monospace",
-        fontSize: 12,
+        fontSize: this.fontSize,
         lineHeight: 1.2,
         theme: {
           background: "#1e2939",
@@ -58,7 +61,7 @@ export default (containerId) => {
 
       this.fitAddon = new FitAddon.FitAddon()
       this.terminal.loadAddon(this.fitAddon)
-      this.terminal.open(this.$el)
+      this.terminal.open(this.$refs.terminalElement)
       this.fitAddon.fit()
 
       // Send terminal input to WebSocket
@@ -70,6 +73,22 @@ export default (containerId) => {
 
       // Start connection
       this.connectWebSocket()
+    },
+
+    increaseFontSize() {
+      if (this.fontSize < this.maxFontSize) {
+        this.fontSize += 2
+        this.terminal.options.fontSize = this.fontSize
+        this.fitAddon.fit()
+      }
+    },
+
+    decreaseFontSize() {
+      if (this.fontSize > this.minFontSize) {
+        this.fontSize -= 2
+        this.terminal.options.fontSize = this.fontSize
+        this.fitAddon.fit()
+      }
     },
 
     connectWebSocket() {

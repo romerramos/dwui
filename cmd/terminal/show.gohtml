@@ -15,22 +15,55 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program. If not, see <https://www.gnu.org/licenses/>.
 */ -}}
-<div class="w-full h-full flex flex-col">
+<div
+  class="w-full h-full flex flex-col"
+  x-data="terminal('{{ .ContainerID }}')"
+  x-on:resize.window.debounce.150ms="handleResize()"
+  x-on:visibilitychange.document="handleVisibilityChange()"
+  x-on:beforeunload.window="destroy()"
+>
   <div
-    class="flex items-center justify-between px-2 pb-1 bg-gray-800 border-b border-gray-600"
+    class="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-600"
   >
     <div class="text-sm text-gray-300 font-medium">
       {{ .ContainerName }}
     </div>
-    <div class="text-xs text-gray-400">Terminal</div>
+    <div class="flex items-center gap-2">
+      <button
+        x-on:click="decreaseFontSize()"
+        class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+        x-bind:disabled="fontSize <= minFontSize"
+        x-bind:class="fontSize <= minFontSize ? 'opacity-50 cursor-not-allowed' : ''"
+        title="Decrease font size"
+      >
+        A-
+      </button>
+      <button
+        x-on:click="increaseFontSize()"
+        class="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+        x-bind:disabled="fontSize >= maxFontSize"
+        x-bind:class="fontSize >= maxFontSize ? 'opacity-50 cursor-not-allowed' : ''"
+        title="Increase font size"
+      >
+        A+
+      </button>
+      <div x-show="isConnected" class="text-green-400 text-xs" title="Connected">
+        ●
+      </div>
+      <div
+        x-show="!isConnected"
+        class="text-red-400 text-xs"
+        title="Disconnected"
+      >
+        ●
+      </div>
+      <div class="text-xs text-gray-400">Terminal</div>
+    </div>
   </div>
   <div
     id="terminal"
-    class="flex-1"
+    x-ref="terminalElement"
+    class="flex-1 min-h-0"
     data-container-id="{{ .ContainerID }}"
-    x-data="terminal('{{ .ContainerID }}')"
-    x-on:resize.window.debounce.150ms="handleResize()"
-    x-on:visibilitychange.document="handleVisibilityChange()"
-    x-on:beforeunload.window="destroy()"
   ></div>
 </div>
