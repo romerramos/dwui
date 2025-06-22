@@ -37,20 +37,16 @@ var (
 	SessionCookieName = "dwui_session"
 )
 
-func Create(w http.ResponseWriter) error {
-	if database.Instance == nil {
-		if err := database.Init(); err != nil {
-			return err
-		}
-	}
+const SessionTTL = 24 * time.Hour
 
+func Create(w http.ResponseWriter) error {
 	sessionID := make([]byte, 32)
 	if _, err := rand.Read(sessionID); err != nil {
 		return err
 	}
 
 	sessionToken := hex.EncodeToString(sessionID)
-	expiry := time.Now().Add(24 * time.Hour) // 24 hour session
+	expiry := time.Now().Add(SessionTTL)
 
 	if err := add(sessionToken, expiry); err != nil {
 		return err
@@ -82,7 +78,7 @@ func setCookie(w http.ResponseWriter, sessionToken string) {
 		Name:     SessionCookieName,
 		Value:    sessionToken,
 		Path:     "/",
-		MaxAge:   86400, // 24 hours
+		MaxAge:   int(SessionTTL.Seconds()),
 		HttpOnly: true,
 		Secure:   false, // Set to true in production with HTTPS
 		SameSite: http.SameSiteLaxMode,
@@ -117,8 +113,7 @@ func add(token string, expiry time.Time) error {
 	}
 
 	return database.Instance.Update(func(txn *badger.Txn) error {
-		// Set TTL for automatic expiration (BadgerInstance will clean up automatically)
-		return txn.SetEntry(badger.NewEntry([]byte(token), sessionData).WithTTL(24 * time.Hour))
+		return txn.SetEntry(badger.NewEntry([]byte(token), sessionData).WithTTL(SessionTTL))
 	})
 }
 
@@ -163,7 +158,7 @@ func extend(session SessionData) error {
 
 	now := time.Now()
 
-	newExpiry := now.Add(24 * time.Hour)
+	newExpiry := now.Add(SessionTTL)
 	session.Expiry = newExpiry
 
 	sessionData, err := json.Marshal(session)
@@ -172,7 +167,7 @@ func extend(session SessionData) error {
 	}
 
 	database.Instance.Update(func(txn *badger.Txn) error {
-		return txn.SetEntry(badger.NewEntry([]byte(session.Token), sessionData).WithTTL(24 * time.Hour))
+		return txn.SetEntry(badger.NewEntry([]byte(session.Token), sessionData).WithTTL(SessionTTL))
 	})
 
 	return nil

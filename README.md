@@ -119,8 +119,15 @@ To run the project in a development environment, you'll need two separate termin
 You can build the binary from the source code.
 
 - **For Linux:**
+
   ```bash
   GOOS=linux GOARCH=amd64 go build -o ./dist/dwui-linux
+  ```
+
+- **For Mac (M chips):**
+
+  ```bash
+  GOOS=darwin GOARCH=arm64 go build -o ./dist/dwui-mac
   ```
 
 ## Contributing

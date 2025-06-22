@@ -17,8 +17,7 @@
 */ -}}
 <div
   class="flex flex-col h-full w-full font-mono"
-  x-data="logsComponent('{{ .ContainerID }}')"
-  x-init="initLogs()"
+  x-data="logs('{{ .ContainerID }}')"
   x-on:beforeunload.window="destroy()"
   x-on:keydown.escape="hideSearch()"
 >

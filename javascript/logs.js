@@ -15,7 +15,7 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-export function createLogsComponent(containerId) {
+export default (containerId) => {
   return {
     socket: null,
     isConnected: false,
@@ -36,7 +36,7 @@ export function createLogsComponent(containerId) {
     highlightedContent: "",
     shiftKeyPressed: false,
 
-    initLogs() {
+    init() {
       this.logLines = []
 
       this.updateDisplay()
