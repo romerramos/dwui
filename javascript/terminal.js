@@ -48,7 +48,7 @@ export default (containerId) => {
 
       this.fitAddon = new FitAddon.FitAddon()
       this.terminal.loadAddon(this.fitAddon)
-      this.terminal.open(this.$refs.terminalElement)
+      this.terminal.open(this.$el)
       this.fitAddon.fit()
 
       // Send terminal input to WebSocket
@@ -83,7 +83,7 @@ export default (containerId) => {
         ? window.location.host.replace("8082", "8300")
         : window.location.host
 
-      const wsUrl = `${protocol}//${locationHost}/terminal/${this.containerId}`
+      const wsUrl = `${protocol}//${locationHost}/terminal/stream/${this.containerId}`
 
       this.socket = new WebSocket(wsUrl)
 

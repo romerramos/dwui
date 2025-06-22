@@ -108,8 +108,8 @@ func main() {
 		r.Get("/containers", containers.Index(templateFiles))
 		r.Get("/logs/{containerID}", logs.Show(templateFiles))
 		r.Get("/logs/stream/{containerID}", logs.Socket)
-		r.Get("/terminal/{containerID}", terminal.Socket)
-		r.Get("/terminal/view/{containerID}", terminal.Show(templateFiles))
+		r.Get("/terminal/{containerID}", terminal.Show(templateFiles))
+		r.Get("/terminal/stream/{containerID}", terminal.Socket)
 		r.Get("/inspect/{containerID}", inspect.Show(templateFiles))
 	})
 
