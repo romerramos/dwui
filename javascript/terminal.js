@@ -21,6 +21,7 @@ export default (containerId) => {
     socket: null,
     isConnected: false,
     containerId: containerId,
+    isFullScreenMode: false,
     fitAddon: null,
     fontSize: 12,
     minFontSize: 6,
@@ -28,6 +29,13 @@ export default (containerId) => {
 
     handleResize() {
       this.fitAddon.fit()
+    },
+
+    toggleFullScreenMode() {
+      this.isFullScreenMode = !this.isFullScreenMode
+      this.$nextTick(() => {
+        this.handleResize()
+      })
     },
 
     handleVisibilityChange() {
