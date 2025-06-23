@@ -53,7 +53,9 @@ var imagesFiles embed.FS
 func main() {
 	// Parse command line flags
 	var password string
+	var port string
 	flag.StringVar(&password, "password", "", "Password for authentication (if not provided, a random one will be generated)")
+	flag.StringVar(&port, "port", "8300", "Port to run the server on")
 	flag.Parse()
 
 	// Set up authentication
@@ -113,8 +115,8 @@ func main() {
 		r.Get("/inspect/{containerID}", inspect.Show(templateFiles))
 	})
 
-	fmt.Println("Starting server on :8300")
-	err := http.ListenAndServe(":8300", r)
+	fmt.Printf("Starting server on :%s\n", port)
+	err := http.ListenAndServe(":"+port, r)
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 	}

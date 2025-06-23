@@ -24,80 +24,35 @@ Born out of a need for a no-fuss container management tool, DWUI aims to be simp
 - **Kamal-Friendly**: A great companion to your Kamal deployment workflow.
 - **Responsive**: Access it from your desktop or on the go from your phone.
 
-## Getting Started
+## Installation
 
-### Quick Install (One-Liner)
+You can install DWUI as a systemd service on your Linux server with a single command. This will download the binary, set it up to run as a service, and start it automatically.
 
-You can download and run DWUI with a single command.
+Make sure to replace `your-very-secure-password` with a strong password of your choice.
 
 ```bash
-# Download the binary for Linux
-curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.0.1/dwui-linux
-
-# Make it executable
-chmod +x dwui-linux
-
-# Run it!
-./dwui-linux --password your-very-secure-password
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password
 ```
 
-The server will be available at `http://<your-server-ip>:8300`.
+You can also specify a custom port or version:
 
-### Running as a Service (systemd)
+```bash
+# Install on a custom port (e.g., 9000)
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --port 9000
 
-For a more permanent setup on Linux servers using `systemd`, you can run DWUI as a service.
+# Install a specific version
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --version v0.0.1
+```
 
-1.  **Download and move the binary:**
+The server will be available at `http://<your-server-ip>:<port>`.
 
-    ```bash
-    # Download the binary
-    curl -L -o dwui-linux https://github.com/romerramos/dwui/releases/download/v0.0.1/dwui-linux
-    chmod +x dwui-linux
+### Uninstallation
 
-    # Move it to a directory in your PATH
-    sudo mv dwui-linux /usr/local/bin/dwui
-    ```
+To remove DWUI and the associated service from your server, you can use the uninstallation script:
 
-2.  **Create a service file:**
-
-    Create a new file at `/etc/systemd/system/dwui.service`:
-
-    ```bash
-    sudo nano /etc/systemd/system/dwui.service
-    ```
-
-    Paste the following content into the file. Make sure to **change the password**!
-
-    ```ini
-    [Unit]
-    Description=DWUI - Docker Web UI
-    After=docker.service
-    Requires=docker.service
-
-    [Service]
-    ExecStart=/usr/local/bin/dwui --password your-very-secure-password
-    Restart=always
-    User=root # Or another user that has access to the Docker socket
-
-    [Install]
-    WantedBy=multi-user.target
-    ```
-
-3.  **Enable and start the service:**
-
-    ```bash
-    # Reload systemd to recognize the new service
-    sudo systemctl daemon-reload
-
-    # Enable DWUI to start on boot
-    sudo systemctl enable dwui
-
-    # Start the service immediately
-    sudo systemctl start dwui
-
-    # Check the status to make sure it's running
-    sudo systemctl status dwui
-    ```
+```bash
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/uninstall.sh | sudo bash
+```
 
 ## Development
 
@@ -129,6 +84,12 @@ You can build the binary from the source code.
   ```bash
   GOOS=darwin GOARCH=arm64 go build -o ./dist/dwui-mac
   ```
+
+- **For Windows (64 bits):**
+
+```bash
+GOOS=windows GOARCH=amd64 go build -o ./dist/dwui-windows.exe
+```
 
 ## Contributing
 
