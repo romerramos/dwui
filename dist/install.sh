@@ -15,7 +15,7 @@ PORT="8300"
 if [ -f "$(dirname "$0")/VERSION" ]; then
     VERSION=$(cat "$(dirname "$0")/VERSION" | tr -d '[:space:]')
 else
-    VERSION="v0.0.2"  # Fallback for standalone usage
+    VERSION="v0.0.1"  # Fallback for standalone usage
 fi
 PASSWORD=""
 PASSWORD_FILE="/var/lib/dwui/password"

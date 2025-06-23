@@ -41,7 +41,7 @@ You can also specify a custom port or version:
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password dwui-admin --port 9000
 
 # Run a specific version
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password dwui-admin --version v0.0.2
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password dwui-admin --version v0.0.1
 ```
 
 ## Installation
@@ -81,7 +81,7 @@ You can also specify a custom port or version for both fixed and dynamic passwor
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --port 9000
 
 # Install a specific version with a fixed password
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin --version v0.0.2
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin --version v0.0.1
 ```
 
 The server will be available at `http://<your-server-ip>:<port>`.
@@ -106,7 +106,7 @@ You can also specify a specific version or force an update:
 
 ```bash
 # Update to a specific version
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/update.sh | sudo bash -s -- --version v0.0.2
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/update.sh | sudo bash -s -- --version v0.0.1
 
 # Force update (even if already on the target version)
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/update.sh | sudo bash -s -- --force

@@ -8,7 +8,7 @@ set -e
 if [ -f "$(dirname "$0")/VERSION" ]; then
     VERSION=$(cat "$(dirname "$0")/VERSION" | tr -d '[:space:]')
 else
-    VERSION="v0.0.2"  # Fallback for standalone usage
+    VERSION="v0.0.1"  # Fallback for standalone usage
 fi
 # Save original args to pass them to the binary later
 ARGS=("$@")
