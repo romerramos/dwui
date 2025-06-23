@@ -4,9 +4,12 @@
 set -e
 
 # --- Argument Parsing ---
-# A default version in case the user doesn't specify one.
-# It's a good practice to point to a specific, stable version.
-VERSION="v0.0.2"
+# Try to read version from VERSION file in same directory, fallback to hardcoded
+if [ -f "$(dirname "$0")/VERSION" ]; then
+    VERSION=$(cat "$(dirname "$0")/VERSION" | tr -d '[:space:]')
+else
+    VERSION="v0.0.2"  # Fallback for standalone usage
+fi
 # Save original args to pass them to the binary later
 ARGS=("$@")
 

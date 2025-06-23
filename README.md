@@ -86,6 +86,32 @@ curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh
 
 The server will be available at `http://<your-server-ip>:<port>`.
 
+## Updating
+
+To update DWUI to the latest version, you can use the update script:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/update.sh | sudo bash
+```
+
+The update script will:
+
+- Automatically detect the current version
+- Download the latest version
+- Create a backup of the current binary
+- Stop the service, update the binary, and restart the service
+- Clean up old backup files (keeping the 3 most recent)
+
+You can also specify a specific version or force an update:
+
+```bash
+# Update to a specific version
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/update.sh | sudo bash -s -- --version v0.0.2
+
+# Force update (even if already on the target version)
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/update.sh | sudo bash -s -- --force
+```
+
 ## Uninstallation
 
 To remove DWUI and the associated service from your server, you can use the uninstallation script:

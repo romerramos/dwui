@@ -11,7 +11,12 @@ fi
 
 # Default values
 PORT="8300"
-VERSION="v0.0.2"
+# Try to read version from VERSION file in same directory, fallback to hardcoded
+if [ -f "$(dirname "$0")/VERSION" ]; then
+    VERSION=$(cat "$(dirname "$0")/VERSION" | tr -d '[:space:]')
+else
+    VERSION="v0.0.2"  # Fallback for standalone usage
+fi
 PASSWORD=""
 PASSWORD_FILE="/var/lib/dwui/password"
 
