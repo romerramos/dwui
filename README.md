@@ -24,6 +24,26 @@ Born out of a need for a no-fuss container management tool, DWUI aims to be simp
 - **Kamal-Friendly**: A great companion to your Kamal deployment workflow.
 - **Responsive**: Access it from your desktop or on the go from your phone.
 
+## Run without Installing
+
+You can run DWUI without a persistent installation using a single command. This will download the correct binary for your system (macOS or Linux), make it executable, and run it.
+
+Make sure to replace `your-very-secure-password` with a strong password.
+
+```bash
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password
+```
+
+You can also specify a custom port or version:
+
+```bash
+# Run on port 9000
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --port 9000
+
+# Run a specific version
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --version v0.0.1
+```
+
 ## Installation
 
 You can install DWUI as a systemd service on your Linux server with a single command. This will download the binary, set it up to run as a service, and start it automatically.
@@ -71,24 +91,23 @@ To run the project in a development environment, you'll need two separate termin
 
 ## Building from Source
 
-You can build the binary from the source code.
-
-- **For Linux:**
-
-  ```bash
-  GOOS=linux GOARCH=amd64 go build -o ./dist/dwui-linux
-  ```
-
-- **For Mac (M chips):**
-
-  ```bash
-  GOOS=darwin GOARCH=arm64 go build -o ./dist/dwui-mac
-  ```
-
-- **For Windows (64 bits):**
+To build the binaries from source, you'll need Go and Make installed on your system. You can build for all supported platforms with a single command:
 
 ```bash
-GOOS=windows GOARCH=amd64 go build -o ./dist/dwui-windows.exe
+make build-all
+```
+
+This will place all the binaries in the `./dist` directory. You can also build for a specific platform:
+
+```bash
+# Build for Mac (Apple Silicon)
+make mac-arm64
+
+# Build for Linux (amd64)
+make linux-amd64
+
+# Build for Windows (amd64)
+make windows-amd64
 ```
 
 ## Contributing
