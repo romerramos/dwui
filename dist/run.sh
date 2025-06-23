@@ -6,7 +6,7 @@ set -e
 # --- Argument Parsing ---
 # A default version in case the user doesn't specify one.
 # It's a good practice to point to a specific, stable version.
-VERSION="v0.0.1"
+VERSION="v0.0.2"
 # Save original args to pass them to the binary later
 ARGS=("$@")
 

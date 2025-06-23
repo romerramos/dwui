@@ -41,7 +41,7 @@ You can also specify a custom port or version:
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --port 9000
 
 # Run a specific version
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --version v0.0.1
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --version v0.0.2
 ```
 
 ## Installation
@@ -61,7 +61,7 @@ You can also specify a custom port or version:
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --port 9000
 
 # Install a specific version
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --version v0.0.1
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --version v0.0.2
 ```
 
 The server will be available at `http://<your-server-ip>:<port>`.

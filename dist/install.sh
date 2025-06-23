@@ -11,7 +11,7 @@ fi
 
 # Default values
 PORT="8300"
-VERSION="v0.0.1"
+VERSION="v0.0.2"
 PASSWORD=""
 
 # Parse named arguments
