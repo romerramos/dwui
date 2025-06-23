@@ -28,45 +28,47 @@ Born out of a need for a no-fuss container management tool, DWUI aims to be simp
 
 You can run DWUI without a persistent installation using a single command. This will download the correct binary for your system (macOS or Linux), make it executable, and run it.
 
-Make sure to replace `your-very-secure-password` with a strong password.
+Make sure to replace `dwui-admin` with a strong password.
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password dwui-admin
 ```
 
 You can also specify a custom port or version:
 
 ```bash
 # Run on port 9000
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --port 9000
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password dwui-admin --port 9000
 
 # Run a specific version
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password your-very-secure-password --version v0.0.2
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | bash -s -- --password dwui-admin --version v0.0.2
 ```
 
 ## Installation
 
 You can install DWUI as a systemd service on your Linux server with a single command. This will download the binary, set it up to run as a service, and start it automatically.
 
-Make sure to replace `your-very-secure-password` with a strong password of your choice.
+Make sure to replace `dwui-admin` with a strong password of your choice.
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin
 ```
 
 You can also specify a custom port or version:
 
 ```bash
 # Install on a custom port (e.g., 9000)
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --port 9000
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin --port 9000
 
 # Install a specific version
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password your-very-secure-password --version v0.0.2
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin --version v0.0.2
 ```
 
 The server will be available at `http://<your-server-ip>:<port>`.
 
-### Uninstallation
+> If you installed and didn't provided a password it should be **dwui-admin**, if you created a custom one and forgot check the status of the service and it will show you the original command that you ran when installing `systemctl status dwui` (including the password)
+
+## Uninstallation
 
 To remove DWUI and the associated service from your server, you can use the uninstallation script:
 
