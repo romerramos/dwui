@@ -68,9 +68,6 @@ func main() {
 			os.Exit(1)
 		}
 		password = generatedPassword
-		fmt.Printf("\n🔐 DWUI Authentication Password: %s\n", password)
-		fmt.Printf("💡 Use this password to sign in to the web interface\n\n")
-
 		if passwordFile != "" {
 			err := os.WriteFile(passwordFile, []byte(password), 0600)
 			if err != nil {
