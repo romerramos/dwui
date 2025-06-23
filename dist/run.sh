@@ -12,21 +12,12 @@ ARGS=("$@")
 
 # Parse arguments to find a custom version
 # We only need the version for the download URL. The rest of the args are for the binary.
-TEMP_ARGS=("$@")
-while [ "${#TEMP_ARGS[@]}" -gt 0 ]; do
-    case "${TEMP_ARGS[0]}" in
-        --version)
-            VERSION="${TEMP_ARGS[1]}"
-            # remove --version and its value
-            unset 'TEMP_ARGS[0]'
-            unset 'TEMP_ARGS[1]'
-            break # Found version, no need to parse further
-            ;;
-        *)
-            # remove the parsed argument
-            unset 'TEMP_ARGS[0]'
-            ;;
-    esac
+for i in "${!ARGS[@]}"; do
+    if [[ "${ARGS[$i]}" == "--version" ]]; then
+        # Found --version, so grab the next element as the value
+        VERSION="${ARGS[$i+1]}"
+        break
+    fi
 done
 
 
