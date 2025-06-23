@@ -46,27 +46,45 @@ curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | b
 
 ## Installation
 
-You can install DWUI as a systemd service on your Linux server with a single command. This will download the binary, set it up to run as a service, and start it automatically.
+You can install DWUI as a systemd service on your Linux server. This will download the binary, set it up to run as a service, and start it automatically.
 
-Make sure to replace `dwui-admin` with a strong password of your choice.
+### With a Fixed Password
+
+You can set a fixed password during installation. Make sure to replace `dwui-admin` with a strong password of your choice.
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin
 ```
 
-You can also specify a custom port or version:
+### With a Dynamic Password
+
+If you prefer, you can configure the service to generate a new random password every time it starts or restarts. To do this, simply omit the `--password` flag during installation:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash
+```
+
+When using a dynamic password, you can retrieve the current password by checking the service's status:
+
+```bash
+systemctl status dwui
+```
+
+### Custom Port and Version
+
+You can also specify a custom port or version for both fixed and dynamic password installations:
 
 ```bash
 # Install on a custom port (e.g., 9000)
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin --port 9000
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --port 9000
 
-# Install a specific version
+# Install a specific version with a fixed password
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin --version v0.0.2
 ```
 
 The server will be available at `http://<your-server-ip>:<port>`.
 
-> If you installed and didn't provided a password it should be **dwui-admin**, if you created a custom one and forgot check the status of the service and it will show you the original command that you ran when installing `systemctl status dwui` (including the password)
+> If you set a fixed password and forgot it, you can check the status of the service to see the original command you ran during installation: `systemctl status dwui`.
 
 ## Uninstallation
 

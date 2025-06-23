@@ -52,12 +52,6 @@ case "$ARCH" in
         ;;
 esac
 
-# Check for password argument
-if [ -z "$PASSWORD" ]; then
-  echo "Usage: $0 --password <password> [--port <port>] [--version <version>]" >&2
-  exit 1
-fi
-
 DWUI_BINARY="dwui-linux-${GO_ARCH}"
 DWUI_URL="https://github.com/romerramos/dwui/releases/download/${VERSION}/${DWUI_BINARY}"
 INSTALL_PATH="/usr/local/bin/dwui"
@@ -78,6 +72,16 @@ mv "$DWUI_BINARY" "$INSTALL_PATH"
 
 # Create a service file
 echo "Creating systemd service file..."
+
+EXEC_START_COMMAND="$INSTALL_PATH --port $PORT"
+if [ -n "$PASSWORD" ]; then
+  EXEC_START_COMMAND="$EXEC_START_COMMAND --password $PASSWORD"
+  echo "Password provided. Configuring service with a fixed password."
+else
+  echo "No password provided. A random password will be generated on each start."
+  echo "You can find the password by running: systemctl status dwui"
+fi
+
 cat > "$SERVICE_FILE" <<EOL
 [Unit]
 Description=DWUI - Docker Web UI
@@ -85,7 +89,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStart=$INSTALL_PATH --password ${PASSWORD} --port ${PORT}
+ExecStart=$EXEC_START_COMMAND
 Restart=always
 User=root
 
