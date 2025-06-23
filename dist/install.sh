@@ -61,7 +61,7 @@ SERVICE_FILE="/etc/systemd/system/dwui.service"
 echo "Starting DWUI installation..."
 
 # Download the binary
-echo "Downloading DWUI binary version ${VERSION}..."
+echo "Downloading DWUI binary version ${VERSION} from ${DWUI_URL}..."
 curl -L -o "$DWUI_BINARY" "$DWUI_URL"
 
 # Make it executable
