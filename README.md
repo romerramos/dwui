@@ -48,16 +48,6 @@ curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/run.sh | b
 
 You can install DWUI as a systemd service on your Linux server. This will download the binary, set it up to run as a service, and start it automatically.
 
-### With a Fixed Password
-
-You can set a fixed password during installation. Make sure to replace `dwui-admin` with a strong password of your choice.
-
-```bash
-curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin
-```
-
-> **Forgot your password?** If you forget the fixed password, you can retrieve it by inspecting the service's configuration. The `systemctl status dwui` command will show the original command you ran, including the password.
-
 ### With a Dynamic Password
 
 If you prefer, you can configure the service to generate a new random password every time it starts or restarts. To do this, simply omit the `--password` flag during installation:
@@ -71,6 +61,16 @@ When using a dynamic password, the generated password will be stored in `/var/li
 ```bash
 sudo cat /var/lib/dwui/password
 ```
+
+### With a Fixed Password
+
+You can set a fixed password during installation. Make sure to replace `dwui-admin` with a strong password of your choice.
+
+```bash
+curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin
+```
+
+> **Forgot your password?** If you forget the fixed password, you can retrieve it by inspecting the service's configuration. The `systemctl status dwui` command will show the original command you ran, including the password.
 
 ### Custom Port and Version
 
@@ -114,7 +114,7 @@ To run the project in a development environment, you'll need two separate termin
 To build the binaries from source, you'll need Go and Make installed on your system. You can build for all supported platforms with a single command:
 
 ```bash
-make build-all
+make
 ```
 
 This will place all the binaries in the `./dist` directory. You can also build for a specific platform:
