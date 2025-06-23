@@ -60,7 +60,7 @@ BINARY_NAME="dwui-${PLATFORM}"
 DOWNLOAD_URL="https://github.com/romerramos/dwui/releases/download/${VERSION}/${BINARY_NAME}"
 TMP_BINARY="/tmp/${BINARY_NAME}"
 
-echo "Downloading DWUI ${VERSION} for ${PLATFORM}..."
+echo "Downloading DWUI ${VERSION} for ${PLATFORM} using ${DOWNLOAD_URL}..."
 curl -sSL -o "$TMP_BINARY" "$DOWNLOAD_URL"
 
 echo "Making the binary executable..."
