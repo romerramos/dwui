@@ -56,6 +56,8 @@ You can set a fixed password during installation. Make sure to replace `dwui-adm
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash -s -- --password dwui-admin
 ```
 
+> **Forgot your password?** If you forget the fixed password, you can retrieve it by inspecting the service's configuration. The `systemctl status dwui` command will show the original command you ran, including the password.
+
 ### With a Dynamic Password
 
 If you prefer, you can configure the service to generate a new random password every time it starts or restarts. To do this, simply omit the `--password` flag during installation:
@@ -64,10 +66,10 @@ If you prefer, you can configure the service to generate a new random password e
 curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh | sudo bash
 ```
 
-When using a dynamic password, you can retrieve the current password by checking the service's status:
+When using a dynamic password, the generated password will be stored in `/var/lib/dwui/password`. You can retrieve the current password with:
 
 ```bash
-systemctl status dwui
+sudo cat /var/lib/dwui/password
 ```
 
 ### Custom Port and Version
@@ -83,8 +85,6 @@ curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/install.sh
 ```
 
 The server will be available at `http://<your-server-ip>:<port>`.
-
-> If you set a fixed password and forgot it, you can check the status of the service to see the original command you ran during installation: `systemctl status dwui`.
 
 ## Uninstallation
 

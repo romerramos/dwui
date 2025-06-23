@@ -13,6 +13,7 @@ fi
 PORT="8300"
 VERSION="v0.0.2"
 PASSWORD=""
+PASSWORD_FILE="/var/lib/dwui/password"
 
 # Parse named arguments
 while [ "$#" -gt 0 ]; do
@@ -79,7 +80,13 @@ if [ -n "$PASSWORD" ]; then
   echo "Password provided. Configuring service with a fixed password."
 else
   echo "No password provided. A random password will be generated on each start."
-  echo "You can find the password by running: systemctl status dwui"
+  mkdir -p "$(dirname "$PASSWORD_FILE")"
+  touch "$PASSWORD_FILE"
+  chown root:root "$(dirname "$PASSWORD_FILE")"
+  chown root:root "$PASSWORD_FILE"
+  chmod 600 "$PASSWORD_FILE"
+  EXEC_START_COMMAND="$EXEC_START_COMMAND --password-file $PASSWORD_FILE"
+  echo "You can find the password by running: sudo cat $PASSWORD_FILE"
 fi
 
 cat > "$SERVICE_FILE" <<EOL

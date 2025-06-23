@@ -54,8 +54,10 @@ func main() {
 	// Parse command line flags
 	var password string
 	var port string
+	var passwordFile string
 	flag.StringVar(&password, "password", "", "Password for authentication (if not provided, a random one will be generated)")
 	flag.StringVar(&port, "port", "8300", "Port to run the server on")
+	flag.StringVar(&passwordFile, "password-file", "", "File to store the generated password")
 	flag.Parse()
 
 	// Set up authentication
@@ -68,6 +70,15 @@ func main() {
 		password = generatedPassword
 		fmt.Printf("\n🔐 DWUI Authentication Password: %s\n", password)
 		fmt.Printf("💡 Use this password to sign in to the web interface\n\n")
+
+		if passwordFile != "" {
+			err := os.WriteFile(passwordFile, []byte(password), 0600)
+			if err != nil {
+				fmt.Printf("⚠️  Warning: Could not write password to %s: %v\n", passwordFile, err)
+			} else {
+				fmt.Printf("🔑 Password also stored in: %s\n", passwordFile)
+			}
+		}
 	} else {
 		fmt.Printf("🔐 Using provided password for authentication\n")
 	}
