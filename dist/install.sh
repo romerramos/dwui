@@ -11,11 +11,13 @@ fi
 
 # Default values
 PORT="8300"
-# Try to read version from VERSION file in same directory, fallback to hardcoded
+# Try to read version from local VERSION file, then from GitHub, then fallback
 if [ -f "$(dirname "$0")/VERSION" ]; then
     VERSION=$(cat "$(dirname "$0")/VERSION" | tr -d '[:space:]')
+elif command -v curl >/dev/null 2>&1; then
+    VERSION=$(curl -sSL https://raw.githubusercontent.com/romerramos/dwui/main/dist/VERSION 2>/dev/null | tr -d '[:space:]' || echo "v0.0.1")
 else
-    VERSION="v0.0.1"  # Fallback for standalone usage
+    VERSION="v0.0.1"  # Fallback when curl is not available
 fi
 PASSWORD=""
 PASSWORD_FILE="/var/lib/dwui/password"
